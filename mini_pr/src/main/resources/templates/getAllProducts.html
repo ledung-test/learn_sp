@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List Product</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 1em;
+    }
+    .search-container {
+        text-align: right;
+        padding: 10px;
+    }
+
+    .search-input {
+        padding: 5px;
+        margin-right: 5px;
+    }
+
+    .search-button {
+        padding: 5px 10px;
+    }
+
+    .product-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .product-item {
+        width: 23%;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-item img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .product-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .product-price {
+        color: #e44d26;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .discount {
+        color: #e44d26;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+
+    .rate {
+        color: #ffcc00;
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+    button {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+<body>
+<header>
+    <h1>Danh sách sản phẩm</h1>
+</header>
+<div class="search-container">
+    <form id="searchForm" action="" method="get">
+        <input type="text" class="search-input" name="search" placeholder="Nhập từ khóa">
+        <button type="submit" class="search-button button"> Tìm kiếm</button>
+    </form>
+</div>
+<ul class="product-list">
+    <li th:each="product : ${productList}" class="product-item">
+        <a th:href="@{/products/{id} (id = ${product.getId()})}">
+            <img th:src="${product.getThumbnail()}" alt="Product">
+        </a>
+        <div class="product-info">
+            <div th:text="${product.getName()}" class="product-title"></div>
+            <div th:if="${product.getPriceDiscount() != null}">
+                <div>
+                    <s th:text="${'Giá: ' + product.getPrice() + 'VND'}"></s>
+                </div>
+                <div th:text="${'Giảm giá: ' + product.getPriceDiscount() + 'VND'}" class="discount"></div>
+            </div>
+            <div th:unless="${product.getPriceDiscount() != null}">
+                <div th:text="${'Giá: ' + product.getPrice()} + 'VND'" class="product-price"></div>
+            </div>
+            <div class="rate">
+                <span th:text="${product.getRating()}"></span>
+            </div>
+        </div>
+    </li>
+</ul>
+
+</body>
+</html>

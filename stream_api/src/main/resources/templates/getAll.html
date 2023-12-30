@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Get All</title>
+</head>
+<body>
+<h1>Danh sách</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Job</td>
+        <td>Gender</td>
+        <td>City</td>
+        <td>Salary</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="person, stage : ${personList}" th:classappend="${stage.odd ? 'highlight' : ''}">
+        <td th:text="${person.getId()}"></td>
+        <td th:text="${person.getName()}"></td>
+        <td th:text="${person.getJob()}"></td>
+        <td th:text="${person.getGender()}"></td>
+        <td th:text="${person.getCity()}"></td>
+        <td th:text="${person.getSalary()}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

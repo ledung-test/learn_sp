@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Detail</title>
+</head>
+<body>
+<h2 th:if="${student == null}">Không tìm thấy</h2>
+<ul th:if="${student != null}">
+    <li th:text="${student.getId}"></li>
+    <li th:text="${student.getName()}"></li>
+    <li th:text="${student.getEmail()}"></li>
+    <li th:text="${student.getPhone()}"></li>
+    <li th:text="${student.getScore()}"></li>
+</ul>
+</body>
+</html>

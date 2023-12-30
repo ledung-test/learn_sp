@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Job</title>
+</head>
+<body>
+<h1>Danh sách công việc</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <td>STT</td>
+    <td>Job</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="job, stage : ${sortByJobs}" th:classappend="${stage.odd ? 'highlight' : ''}">
+    <td th:text="${stage.index} + 1"></td>
+    <td th:text="${job}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

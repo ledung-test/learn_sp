@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h1>Home Page</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Phone</td>
+        <td>Score</td>
+        <td>Rank</td>
+        <td>Detail</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student, stage : ${studentList}" th:classappend="${stage.odd ? 'highlight' : ''}">
+        <td th:text="${student.getId()}"></td>
+        <td th:text="${student.getName()}"></td>
+        <td th:text="${student.getEmail()}"></td>
+        <td th:text="${student.getPhone()}"></td>
+        <td th:text="${student.getScore()}"></td>
+        <td th:text="${student.getScore()} > 8 ? 'Giỏi' : 'Khá'"></td>
+        <td>
+            <a th:href="@{/student/{id} (id = ${student.getId})}">Detail</a>
+        </td>
+    </tr>
+    </tbody>
+
+</table>
+</body>
+</html>
