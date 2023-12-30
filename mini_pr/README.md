@@ -1,11 +1,11 @@
 Danh sách sản phẩm : GET http://localhost:8080
 
-![All](/1.png)
+![All](src/main/resources/static/1.png)
 
 Tìm kiếm sản phẩm : GET http://localhost:8080/?search=""
 
-![Search](/3.png)
+![Search](src/main/resources/static/3.png)
 
 Chi tiết sản phẩm: GET http://localhost:8080/products/{id}
 
-![Detail](/2.png)
+![Detail](src/main/resources/static/2.png)
