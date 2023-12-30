@@ -1,7 +1,11 @@
 Danh sách sản phẩm : GET http://localhost:8080
 
-![All](file:///E:/Spring%20Boot/learn_sp/mini_pr/static/images/1.png)
+![All](/1.png)
+
+Tìm kiếm sản phẩm : GET http://localhost:8080/?search=""
+
+![All](/3.png)
 
 Chi tiết sản phẩm: GET http://localhost:8080/products/{id}
 
-![Detail](file:///E:/Spring%20Boot/learn_sp/mini_pr/static/images/2.png)
+![Detail](/2.png)
