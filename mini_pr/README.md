@@ -4,7 +4,7 @@ Danh sách sản phẩm : GET http://localhost:8080
 
 Tìm kiếm sản phẩm : GET http://localhost:8080/?search=""
 
-![All](/3.png)
+![Search](/3.png)
 
 Chi tiết sản phẩm: GET http://localhost:8080/products/{id}
 
