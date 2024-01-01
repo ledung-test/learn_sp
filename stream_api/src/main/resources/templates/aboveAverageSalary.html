@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Job</title>
+</head>
+<body>
+<h1>Danh sách người có mức lương lớn hơn mức lương trung bình</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <td>STT</td>
+    <td>Name</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="people, stage : ${aboveAverageSalary}">
+    <td th:text="${stage.index} + 1"></td>
+    <td th:text="${people.getName()}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

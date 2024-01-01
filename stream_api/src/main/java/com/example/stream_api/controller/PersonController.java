@@ -34,4 +34,24 @@ public class PersonController {
         model.addAttribute("sortByCities", personService.getSortedCities());
         return "getSortedCities";
     }
+    @GetMapping("/groupPeopleByCity")
+    public String groupPeopleByCity(Model model){
+        model.addAttribute("groupPeopleByCity", personService.groupPeopleByCity());
+        return "groupPeopleByCity";
+    }
+    @GetMapping("/groupJobByCount")
+    public String groupJobByCount(Model model){
+        model.addAttribute("groupJobByCount", personService.groupJobByCount());
+        return "groupJobByCount";
+    }
+    @GetMapping("/aboveAverageSalary")
+    public String aboveAverageSalary(Model model){
+        model.addAttribute("aboveAverageSalary", personService.aboveAverageSalary());
+        return "aboveAverageSalary";
+    }
+    @GetMapping("/longestName")
+    public String longestName(Model model){
+        model.addAttribute("longestName", personService.longestName());
+        return "longestName";
+    }
 }

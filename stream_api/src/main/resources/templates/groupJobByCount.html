@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Job</title>
+</head>
+<body>
+<h1>Danh sách công việc và số lượng người làm</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <td>STT</td>
+    <td>Job</td>
+    <td>Count</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="entry, stage : ${groupJobByCount.entrySet()}">
+    <td th:text="${stage.index} + 1"></td>
+    <td th:text="${entry.getKey()}"></td>
+    <td th:text="${entry.getValue()}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

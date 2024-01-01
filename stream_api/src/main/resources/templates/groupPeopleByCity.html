@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Get All</title>
+</head>
+<body>
+<h1>Danh sách theo thành phố</h1>
+<div th:each="entry : ${groupPeopleByCity.entrySet()}">
+    <span th:text="${entry.getKey()}"></span>
+    <ul th:each="person : ${entry.getValue()}">
+        <li th:text="${person.getName()}"></li>
+    </ul>
+</div>
+</body>
+</html>

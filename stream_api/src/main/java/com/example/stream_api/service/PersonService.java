@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PersonService {
@@ -24,5 +25,18 @@ public class PersonService {
     public List<String> getSortedCities(){
         return personDAO.getSortedCities();
     }
+    public Map<String, List<Person>> groupPeopleByCity(){
+        return personDAO.groupPeopleByCity();
+    }
 
+    public Map<String, Integer> groupJobByCount(){
+        return personDAO.groupJobByCount();
+    }
+
+    public List<Person> aboveAverageSalary(){
+        return personDAO.aboveAverageSalary();
+    }
+    public Person longestName(){
+        return personDAO.longestName();
+    }
 }

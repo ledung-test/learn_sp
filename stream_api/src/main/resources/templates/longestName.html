@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Job</title>
+</head>
+<body>
+<h1>Người có độ dài tên dài nhất</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <td>Name</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td th:text="${longestName.getName()}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
