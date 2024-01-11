@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Chi tiết phim</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+    <style>
+        p a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<!--header-->
+<header>
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container">
+            <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="32"
+                    class="text-light d-block my-1"
+                    viewBox="0 0 118 94"
+                    role="img"
+            >
+                <title>Bootstrap</title>
+                <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"
+                        fill="currentColor"
+                ></path>
+            </svg>
+            <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a
+                                class="nav-link text-light active"
+                                aria-current="page"
+                                href="#"
+                        >Đề xuất</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" th:href="@{/phim-bo}">Phim bộ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" th:href="@{/phim-le}">Phim lẻ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" th:href="@{/phim-chieu-rap}">Phim chiếu rạp</a>
+                    </li>
+                </ul>
+                <form class="d-flex w-50 justify-content-end" role="search">
+                    <input
+                            class="form-control me-2 w-50"
+                            type="search"
+                            placeholder="Tìm kiếm"
+                            aria-label="Search"
+                    />
+                    <button class="btn btn-outline-success" type="submit">
+                        Tìm kiếm
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+<!--header-->
+
+<!--section-->
+<section>
+    <div class="container">
+        <div class="row">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item d-flex align-items-center">
+                                <a class="nav-link" aria-current="page" href="#"
+                                >Xem phim </a>
+                                <i class="bi bi-chevron-right"></i>
+                            </li>
+                            <li class="nav-item d-flex align-items-center">
+                                <a th:if="${#strings.equals(chiTietPhim.getType(), 'PHIM_LE')}"
+                                   th:text="${chiTietPhim.getType().getValue()}" th:href="@{/phim-le}"
+                                   class="nav-link"></a>
+                                <a th:if="${#strings.equals(chiTietPhim.getType(), 'PHIM_BO')}"
+                                   th:text="${chiTietPhim.getType().getValue()}" th:href="@{/phim-bo}"
+                                   class="nav-link"></a>
+                                <a th:if="${#strings.equals(chiTietPhim.getType(), 'PHIM_CHIEU_RAP')}"
+                                   th:text="${chiTietPhim.getType().getValue()}" th:href="@{/phim-chieu-rap}"
+                                   class="nav-link"></a>
+                                <i class="bi bi-chevron-right"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a th:text="${chiTietPhim.getTitle()}" class="nav-link active"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="d-flex py-2 gap-5">
+                <img
+                        th:src="${chiTietPhim.getPoster()}"
+                        class="card-img-top"
+                        alt="..."
+                        style="width: 500px"
+                />
+                <div class="">
+                    <h3 th:text="${chiTietPhim.getTitle()}"></h3>
+                    <div class="bg-body-tertiary px-3 py-1">
+                        <p></p>
+                        <p>
+                            Đánh giá: <span th:text="${chiTietPhim.getRating()}"></span>
+                            <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="15"
+                                    height="15"
+                                    fill="currentColor"
+                                    class="bi bi-star-fill"
+                                    viewBox="0 0 15 19"
+                                    style="color: gold"
+                            >
+                                <path
+                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
+                                ></path>
+                            </svg>
+                        </p>
+                        <p>Năm phát hành: <span th:text="${chiTietPhim.getReleaseYear()}"></span></p>
+                        <p>Lượt xem: <span th:text="${chiTietPhim.getView()}"></span></p>
+                        <p th:text="'Nội dung: ' + ${chiTietPhim.getDescription()}">
+                            <a href="#">Xem thêm</a>
+                        </p>
+                    </div>
+                    <div class="py-2">
+                        <button class="btn btn-danger">Xem trailer</button>
+                        <button class="btn btn-primary">Xem phim</button>
+                    </div>
+                </div>
+            </div>
+            <!--            <div class="my-3">-->
+            <!--                <h5>Tập phim</h5>-->
+            <!--                <div>-->
+            <!--                    <button class="btn btn-outline-secondary">1</button>-->
+            <!--                    <button class="btn btn-outline-secondary">2</button>-->
+            <!--                    <button class="btn btn-outline-secondary">3</button>-->
+            <!--                    <button class="btn btn-outline-secondary">4</button>-->
+            <!--                    <button class="btn btn-outline-secondary">5</button>-->
+            <!--                    <button class="btn btn-outline-secondary">6</button>-->
+            <!--                    <button class="btn btn-outline-secondary">7</button>-->
+            <!--                    <button class="btn btn-outline-secondary">8 - End</button>-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </div>
+    </div>
+</section>
+<!--section-->
+
+<!--footer-->
+<footer class="footer fixed-bottom bg-dark">
+    <div class="container">
+        <div class="row">
+            <div class="col-3 mt-2">
+                <a
+                        href="index.html"
+                        class="d-inline-flex text-light align-items-center text-decoration-none"
+                >
+                    <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="40"
+                            height="32"
+                            class="d-block text-light my-3"
+                            viewBox="0 0 118 94"
+                            role="img"
+                    >
+                        <title>Bootstrap</title>
+                        <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"
+                                fill="currentColor"
+                        ></path>
+                        <span class="fs-5 p-2">Test</span>
+                    </svg>
+                </a>
+                <p class="text-light mt-3">
+                    Tận hưởng trải nghiệm xem phim mới nhất miễn phí và dành thời gian
+                    thư giãn chill cùng gia đình và bạn bè. Với một thư viện phim
+                    phong phú.
+                </p>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-2 mt-2">
+                <h5 class="text-light my-3">Phim mới</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-2 mt-2">
+                <h5 class="text-light my-3">Phim mới</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-2 mt-2">
+                <h5 class="text-light my-3">Phim mới</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-2 mt-2">
+                <h5 class="text-light my-3">Phim mới</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="text-decoration-none text-light" href="#">Phim mới</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+<!--footer-->
+
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>
