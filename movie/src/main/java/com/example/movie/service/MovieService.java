@@ -36,4 +36,5 @@ public class MovieService {
         return  movieRepository.findByTypeAndStatus(movieType, status, pageRequest);
     }
 
+
 }

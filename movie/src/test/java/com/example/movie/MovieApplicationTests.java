@@ -19,7 +19,7 @@ class MovieApplicationTests {
     @Autowired
     private MovieRepository movieRepository;
 
-    @Test
+    //@Test
     void test() {
         Faker faker = new Faker(); // Faker data
         Slugify slugify = Slugify.builder().build(); // Generate slug
@@ -56,6 +56,11 @@ class MovieApplicationTests {
     }
     public static String generateLinkImage(String name) {
         return "https://placehold.co/218x290?text=" + getCharacter(name);
+    }
+
+    @Test
+    void testSQL(){
+        System.out.println(movieRepository.existsByTitle("The Waste Land"));
     }
 
 }
