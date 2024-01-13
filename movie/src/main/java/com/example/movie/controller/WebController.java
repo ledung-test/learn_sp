@@ -5,6 +5,7 @@ import com.example.movie.model.enums.MovieType;
 import com.example.movie.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,8 +66,9 @@ public class WebController {
     public String getPhim(Model model, @PathVariable Integer id, @PathVariable String slug){
         Movie movie = movieService.findByIdAndSlug(true, id, slug);
         model.addAttribute("chiTietPhim", movie);
-        //Lấy cùng thể loại và publishedAt giảm dần
-        Page<Movie> deXuat = movieService.findByTypeAndStatus(movie.getType(), true, 1, 6);
+        PageRequest pageRequest = PageRequest.of(1, 6);
+        Page<Movie> deXuat = movieService.findByTypeAndStatusAndRatingGreaterThanEqualAndIdNotOrderByRatingDescViewDescPublishedAtDesc(
+                movie.getType(), true, movie.getRating(), id, pageRequest);
         model.addAttribute("deXuat", deXuat);
         return "web/chi-tiet-phim";
     }

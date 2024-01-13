@@ -36,5 +36,14 @@ public class MovieService {
         return  movieRepository.findByTypeAndStatus(movieType, status, pageRequest);
     }
 
+    public Page<Movie> findByTypeAndStatusAndRatingGreaterThanEqualAndIdNotOrderByRatingDescViewDescPublishedAtDesc(
+            MovieType type,
+            Boolean status,
+            Double rating,
+            Integer id,
+            Pageable pageable){
+        return movieRepository.findByTypeAndStatusAndRatingGreaterThanEqualAndIdNotOrderByRatingDescViewDescPublishedAtDesc(type, status, rating, id, pageable);
+    }
+
 
 }

@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -30,6 +29,14 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     //Phim đề xuất
     Page<Movie> findByStatus(Boolean status, Pageable pageable);
+
+    Page<Movie> findByTypeAndStatusAndRatingGreaterThanEqualAndIdNotOrderByRatingDescViewDescPublishedAtDesc(
+            MovieType type,
+            Boolean status,
+            Double rating,
+            Integer id,
+            Pageable pageable
+    );
 
 
 
@@ -64,8 +71,10 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     // Phân trang phim theo type và status
     //JPQL Query
-    @Query("SELECT m FROM Movie m WHERE m.type = :type AND m.status = :status")
+    //@Query("SELECT m FROM Movie m WHERE m.type = :type AND m.status = :status")
     //Native SQL
-    // @Query(value = "SELECT * FROM movie WHERE type = :type AND status = :status", nativeQuery = true)
+    @Query(value = "SELECT * FROM movies WHERE type = :type AND status = :status",
+            countQuery = "SELECT COUNT(*) FROM movies WHERE type = :type AND status = :status",
+            nativeQuery = true)
     Page<Movie> findByTypeAndStatus(@Param("type") MovieType type, @Param("status") boolean status, Pageable pageable);
 }
