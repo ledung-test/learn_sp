@@ -42,26 +42,31 @@ public class WebController {
     }
 
     @GetMapping("/phim-le")
-    public String getPhimLe(Model model){
-        List<Movie> phimLe = movieService.findByStatusAndType(true, MovieType.PHIM_LE, Sort.by("publishedAt").descending());
-        model.addAttribute("phimLe", phimLe);
+    public String getPhimLe(Model model,
+                            @RequestParam(required = false, defaultValue = "1") Integer page,
+                            @RequestParam(required = false, defaultValue = "10") Integer size){
+        Page<Movie> pageData = movieService.findByTypeAndStatus(MovieType.PHIM_BO, true, page, size);
+        model.addAttribute("pageData", pageData); // hiện thị dữ liệu phân trang
+        model.addAttribute("currentPage", page); // active trang hiện tại
         return "web/phim-le";
     }
 
     @GetMapping("/phim-chieu-rap")
-    public String getPhimChieuRap(Model model){
-        List<Movie> phimChieuRap = movieService.findByStatusAndType(true, MovieType.PHIM_CHIEU_RAP, Sort.by("publishedAt").descending());
-        model.addAttribute("phimChieuRap", phimChieuRap);
+    public String getPhimChieuRap(Model model,
+                                  @RequestParam(required = false, defaultValue = "1") Integer page,
+                                  @RequestParam(required = false, defaultValue = "10") Integer size){
+        Page<Movie> pageData = movieService.findByTypeAndStatus(MovieType.PHIM_BO, true, page, size);
+        model.addAttribute("pageData", pageData); // hiện thị dữ liệu phân trang
+        model.addAttribute("currentPage", page); // active trang hiện tại
         return "web/phim-chieu-rap";
     }
 
     @GetMapping("/phim/{id}/{slug}")
     public String getPhim(Model model, @PathVariable Integer id, @PathVariable String slug){
+        Page<Movie> deXuat = movieService.findByStatus(true, 1, 6);
+        model.addAttribute("deXuat", deXuat);
         Movie movie = movieService.findByIdAndSlug(true, id, slug);
         model.addAttribute("chiTietPhim", movie);
         return "web/chi-tiet-phim";
     }
-
-
-
 }

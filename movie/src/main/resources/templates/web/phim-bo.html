@@ -16,10 +16,39 @@
     />
     <link rel="stylesheet" href="index.css"/>
 </head>
+<style>
+    body, .card-body {
+        background-color: rgb(17, 19, 25);
+    }
+    header,
+    footer {
+        background-color: rgb(10, 12, 15);
+    }
+    .card {
+        border: none;
+    }
+
+    .episode-badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0.5rem;
+        background-color: #e66f20;
+    }
+    a{
+        text-decoration: none;
+        cursor: pointer;
+        color: white;
+    }
+
+    .movie-type-heading a:hover, .card-body a:hover, .blog-item a:hover{
+        color: #1cc749;
+    }
+</style>
 <body>
 <!--header-->
 <header>
-    <nav class="navbar navbar-expand-lg bg-dark">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
             <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -51,14 +80,6 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a
-                                class="nav-link text-light active"
-                                aria-current="page"
-                                href="#"
-                        >Đề xuất</a
-                        >
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link text-light" th:href="@{/phim-bo}">Phim bộ</a>
                     </li>
                     <li class="nav-item">
@@ -75,7 +96,7 @@
                             placeholder="Tìm kiếm"
                             aria-label="Search"
                     />
-                    <button class="btn btn-outline-success" type="submit">
+                    <button class="btn btn-outline-light" type="submit">
                         Tìm kiếm
                     </button>
                 </form>
@@ -86,29 +107,26 @@
 <!--header-->
 
 <!--section-->
-<section class="py-4">
+<section>
     <div class="container">
         <div class="row">
             <div class="d-flex justify-content-between">
-                <h2 class="my-4">Phim bộ</h2>
+                <h2 class="my-4 text-light">Phim bộ</h2>
             </div>
-            <div class="d-flex flex-wrap row-gap-4">
-                <div class="col-3" th:each="movie : ${pageData.getContent()}">
-                    <a class="text-decoration-none"
-                       th:href="@{/phim/{id}/{slug} (id = ${movie.getId()}, slug = ${movie.getSlug()})}">
-                        <div class="card" style="width: 305px; height: 172px">
-                            <img
-                                    th:src="${movie.getPoster()}"
-                                    class="card-img-top"
-                                    alt="..."
-                                    style="width: 305px; height: 115px"
-                            />
-                            <div class="card-body">
-                                <p th:text="${movie.getTitle()}" class="card-text"></p>
-                            </div>
+            <div class="col-md-2 mb-2" th:each="movie : ${pageData.getContent()}">
+                <a th:href="@{/phim/{id}/{slug} (id = ${movie.getId()}, slug = ${movie.getSlug()})}">
+                    <div class="card text-center position-relative">
+                        <span class="badge badge-secondary episode-badge"></span>
+                        <img
+                                th:src="${movie.getPoster()}"
+                                class="card-img"
+                                alt="..."
+                        />
+                        <div class="card-body">
+                            <a class="card-text" th:text="${movie.getTitle()}"></a>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
             </div>
 
             <div class="d-flex justify-content-center py-5" th:if="${pageData.getTotalPages() > 1}">
@@ -141,7 +159,7 @@
 <!--section-->
 
 <!--footer-->
-<footer class="bg-dark">
+<footer>
     <div class="container">
         <div class="row">
             <div class="col-3 mt-2">
