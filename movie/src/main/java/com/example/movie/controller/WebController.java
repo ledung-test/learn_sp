@@ -63,10 +63,11 @@ public class WebController {
 
     @GetMapping("/phim/{id}/{slug}")
     public String getPhim(Model model, @PathVariable Integer id, @PathVariable String slug){
-        Page<Movie> deXuat = movieService.findByStatus(true, 1, 6);
-        model.addAttribute("deXuat", deXuat);
         Movie movie = movieService.findByIdAndSlug(true, id, slug);
         model.addAttribute("chiTietPhim", movie);
+        //Lấy cùng thể loại và publishedAt giảm dần
+        Page<Movie> deXuat = movieService.findByTypeAndStatus(movie.getType(), true, 1, 6);
+        model.addAttribute("deXuat", deXuat);
         return "web/chi-tiet-phim";
     }
 }
