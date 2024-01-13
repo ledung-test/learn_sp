@@ -4,11 +4,13 @@ import com.example.movie.entity.Movie;
 import com.example.movie.model.enums.MovieType;
 import com.example.movie.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -16,10 +18,26 @@ import java.util.List;
 public class WebController {
     @Autowired
     private MovieService movieService;
-    @GetMapping("/phim-bo")
-    public String getPhimBo(Model model){
-        List<Movie> phimBo = movieService.findByStatusAndType(true, MovieType.PHIM_BO, Sort.by("publishedAt").descending());
+    @GetMapping("/")
+    public String getTrangChu(Model model){
+        Page<Movie> deXuat = movieService.findByStatus(true, 1, 6);
+        Page<Movie> phimBo = movieService.findByTypeAndStatus(MovieType.PHIM_BO, true, 1, 12);
+        Page<Movie> phimLe = movieService.findByTypeAndStatus(MovieType.PHIM_LE, true, 1, 12);
+        model.addAttribute("deXuat", deXuat);
         model.addAttribute("phimBo", phimBo);
+        model.addAttribute("phimLe", phimLe);
+        return "web/trang-chu";
+    }
+
+    //phim-bo?page=10&size=12
+    //phim-bo -> page = 1, size = 12
+    @GetMapping("/phim-bo")
+    public String getPhimBo(Model model,
+                            @RequestParam(required = false, defaultValue = "1") Integer page,
+                            @RequestParam(required = false, defaultValue = "10") Integer size){
+        Page<Movie> pageData = movieService.findByTypeAndStatus(MovieType.PHIM_BO, true, page, size);
+        model.addAttribute("pageData", pageData); // hiện thị dữ liệu phân trang
+        model.addAttribute("currentPage", page); // active trang hiện tại
         return "web/phim-bo";
     }
 

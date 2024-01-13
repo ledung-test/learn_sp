@@ -38,11 +38,11 @@ class MovieApplicationTests {
                     .title(title)
                     .slug(slugify.slugify(title))
                     .description(faker.lorem().paragraph())
-                    .poster(faker.company().logo())
+                    .poster(generateLinkImage(title))
                     .type(MovieType.values()[faker.number().numberBetween(0, 3)])
                     .releaseYear(faker.number().numberBetween(2018, 2023))
                     .status(status)
-                    .rating(faker.number().numberBetween(0, 6))
+                    .rating(faker.number().randomDouble(1, 1, 5))
                     .view(faker.number().numberBetween(100, 1000))
                     .createdAt(createdAt)
                     .updatedAt(createdAt)
@@ -50,7 +50,12 @@ class MovieApplicationTests {
                     .build();
             movieRepository.save(movie);
         }
-
+    }
+    private static String getCharacter(String str) {
+        return str.substring(0, 1).toUpperCase();
+    }
+    public static String generateLinkImage(String name) {
+        return "https://placehold.co/218x290?text=" + getCharacter(name);
     }
 
 }

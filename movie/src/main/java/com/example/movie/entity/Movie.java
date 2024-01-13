@@ -32,7 +32,7 @@ public class Movie {
 
     Integer releaseYear;
     Boolean status;
-    Integer rating;
+    Double rating;
     Integer view;
 
     Date createdAt;
