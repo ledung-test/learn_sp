@@ -122,27 +122,6 @@ class MovieApplicationTests {
         }
     }
     @Test
-    void test_review(){
-        Faker faker = new Faker();
-        List<User> users = userRepository.findAll();
-        List<Movie> movies = movieRepository.findAll();
-        Random random = new Random();
-        for (Movie movie: movies) {
-            for (int i = 0; i < random.nextInt(5) + 5; i++) {
-                User rdUser = users.get(random.nextInt(users.size()));
-                Review review = Review.builder()
-                        .content(faker.lorem().paragraph())
-                        .rating(faker.number().randomDouble(1, 1, 5))
-                        .createdAt(new Date())
-                        .updatedAt(new Date())
-                        .user(rdUser)
-                        .movie(movie)
-                        .build();
-                reviewRepository.save(review);
-            }
-        }
-    }
-    @Test
     void test_movie() {
         Faker faker = new Faker();
         Slugify slugify = Slugify.builder().build();
@@ -201,6 +180,27 @@ class MovieApplicationTests {
                     .directors(rdDirectors)
                     .build();
             movieRepository.save(movie);
+        }
+    }
+    @Test
+    void test_review(){
+        Faker faker = new Faker();
+        List<User> users = userRepository.findAll();
+        List<Movie> movies = movieRepository.findAll();
+        Random random = new Random();
+        for (Movie movie: movies) {
+            for (int i = 0; i < random.nextInt(5) + 5; i++) {
+                User rdUser = users.get(random.nextInt(users.size()));
+                Review review = Review.builder()
+                        .content(faker.lorem().paragraph())
+                        .rating(faker.number().randomDouble(1, 1, 5))
+                        .createdAt(new Date())
+                        .updatedAt(new Date())
+                        .user(rdUser)
+                        .movie(movie)
+                        .build();
+                reviewRepository.save(review);
+            }
         }
     }
     private static String getCharacter(String str) {

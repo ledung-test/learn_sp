@@ -27,7 +27,7 @@ public class MovieService {
         return movieRepository.findByStatusAndType(status, type, sort);
     }
 
-    public Movie findByIdAndSlug(Boolean status, Integer id, String slug){
+    public Movie findByStatusAndIdAndSlug(Boolean status, Integer id, String slug){
         return movieRepository.findByStatusAndIdAndSlug(status,id, slug);
     }
 
