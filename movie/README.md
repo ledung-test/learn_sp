@@ -13,3 +13,11 @@ Danh sách phim chiếu rạp: GET http://localhost:8080/phim-chieu-rap
 Chi tiết phim: GET http://localhost:8080/phim/{id}/{slug}
 
 ![Chi tiết](src/main/resources/static/images/3.png)
+
+Danh sách tin tức: GET http://localhost:8080/tin-tuc
+
+![Danh sách](src/main/resources/static/images/4.png)
+
+Chi tiết tin tức: GET http://localhost:8080/tin-tuc/{id}/{slug}
+
+![Chi tiết](src/main/resources/static/images/5.png)
