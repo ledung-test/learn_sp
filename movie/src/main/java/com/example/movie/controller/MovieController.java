@@ -2,8 +2,10 @@ package com.example.movie.controller;
 
 
 import com.example.movie.entity.Movie;
+import com.example.movie.entity.Review;
 import com.example.movie.model.enums.MovieType;
 import com.example.movie.service.MovieService;
+import com.example.movie.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,10 +15,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class MovieController {
     @Autowired
     private MovieService movieService;
+    @Autowired
+    private ReviewService reviewService;
     @GetMapping("/phim-bo")
     public String phimBo(Model model,
                             @RequestParam(required = false, defaultValue = "1") Integer page,
@@ -55,6 +61,8 @@ public class MovieController {
         Page<Movie> deXuat = movieService.findByTypeAndStatusAndRatingGreaterThanEqualAndIdNotOrderByRatingDescViewDescPublishedAtDesc(
                 movie.getType(), true, movie.getRating(), id, pageRequest);
         model.addAttribute("deXuat", deXuat);
+        List<Review> reviewList = reviewService.findByMovie_IdOrderByCreatedAtDesc(id);
+        model.addAttribute("reviews", reviewList);
         return "web/chi-tiet-phim";
     }
 }

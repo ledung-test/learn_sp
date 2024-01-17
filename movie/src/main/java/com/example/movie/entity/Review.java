@@ -22,6 +22,9 @@ public class Review {
     @Column(columnDefinition = "TEXT")
     String content;
     Double rating;
+
+    @Transient // không tạo cột mới trong database
+    String ratingText;
     Date createdAt;
     Date updatedAt;
     @ManyToOne
@@ -30,4 +33,17 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public String getRatingText() {
+        double doubleValue = rating;
+        int intValue = (int) doubleValue;
+        return switch (intValue) {
+            case 1 -> "Tệ";
+            case 2 -> "Không hay";
+            case 3 -> "Bình thường";
+            case 4 -> "Hay";
+            case 5 -> "Tuyệt vời";
+            default -> "Chưa có đánh giá";
+        };
+    }
 }

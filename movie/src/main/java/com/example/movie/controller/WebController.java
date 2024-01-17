@@ -2,9 +2,11 @@ package com.example.movie.controller;
 
 import com.example.movie.entity.Blog;
 import com.example.movie.entity.Movie;
+import com.example.movie.entity.Review;
 import com.example.movie.model.enums.MovieType;
 import com.example.movie.service.BlogService;
 import com.example.movie.service.MovieService;
+import com.example.movie.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +24,7 @@ public class WebController {
     private MovieService movieService;
     @Autowired
     private BlogService blogService;
+
     @GetMapping("/")
     public String trangChu(Model model){
         Page<Movie> deXuat = movieService.findByStatus(true, 1, 6);
