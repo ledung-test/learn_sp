@@ -4,65 +4,20 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Chi tiết phim</title>
+    <!--Link bootstrap-->
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
             rel="stylesheet"
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous"
     />
+    <!-- Link icon bootstrap-->
     <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"
-    />
-    <style>
-        body, .card-body {
-            background-color: rgb(17, 19, 25);
-        }
-
-        header,
-        footer {
-            background-color: rgb(10, 12, 15);
-        }
-
-        .card {
-            border: none;
-        }
-
-        .episode-badge {
-            position: absolute;
-            top: 0;
-            right: 0;
-            padding: 0.5rem;
-            background-color: #e66f20;
-        }
-
-        a {
-            text-decoration: none;
-            cursor: pointer;
-            color: white;
-        }
-        p, i, h3{
-            color: white;
-        }
-
-        .card-body a:hover, .nav-item a:hover {
-            color: #1cc749;
-        }
-
-        .nav-item .nav-link, i {
-            color: white;
-        }
-        .rating-avatar img {
-            height: 70px;
-            width: 70px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-    </style>
+    <!-- Link css-->
+    <link rel="stylesheet" href="/web/css/style.css">
 </head>
 <body>
 <!--header-->
@@ -130,7 +85,7 @@
 </header>
 <!--header-->
 
-<!--section-->
+<!--section link-->
 <section>
     <div class="container my-4">
         <div class="row">
@@ -163,13 +118,11 @@
                 </div>
             </nav>
             <div class="d-flex py-2 gap-5">
-                <img
-                        th:src="${chiTietPhim.getPoster()}"
-                        class="card-img-top"
-                        alt="..."
-                        style="width: 500px"
-                />
-                <div class="left-content">
+                <div class="col-4">
+                    <img id="movie-poster" class="rounded w-100"
+                         th:src="${chiTietPhim.poster}" th:alt="${chiTietPhim.title}">
+                </div>
+                <div class="col-8">
                     <h3 class="title" th:text="${chiTietPhim.getTitle()}"></h3>
                     <div class="px-3 py-1">
                         <p></p>
@@ -204,9 +157,9 @@
         </div>
     </div>
 </section>
-<!--section-->
+<!--section link-->
 
-<!--section-->
+<!--section content-->
 <section>
     <div class="container mt-4">
         <div class="movie-type-heading d-flex justify-content-between">
@@ -231,16 +184,17 @@
         </div>
     </div>
 </section>
-<!--section-->
+<!--section content-->
 
-<!--section-->
+<!--section comment-->
 <section>
     <div class="container my-4">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mb-4">
             <h2 class="text-light">Bình luận</h2>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary mx-2 fs-6" data-bs-toggle="modal" data-bs-target="#modalReview">
-                Viết bình luận
+            <button type="button" class="btn btn btn-danger mx-2 fs-6" data-bs-toggle="modal"
+                    data-bs-target="#modalReview">
+                Đánh giá
             </button>
         </div>
 
@@ -255,7 +209,8 @@
                             <p class="rating-name mb-0">
                                 <strong th:text="${review.user.name}"></strong>
                             </p>
-                            <p class="rating-time mb-0 ms-2" th:text="${#dates.format(review.createdAt, 'dd/MM/yyyy')}"></p>
+                            <p class="rating-time mb-0 ms-2"
+                               th:text="${#dates.format(review.createdAt, 'dd/MM/yyyy')}"></p>
                         </div>
                         <div class="rating-star">
                             <p class="mb-0 fw-bold">
@@ -266,7 +221,8 @@
                         </div>
                         <p class="rating-content mt-1 mb-0" th:text="${review.content}"></p>
                         <div class="rating-action mt-2">
-                            <a href="javascript:void(0)" class="text-primary text-decoration-underline me-2">Sửa</a>
+                            <a data-bs-toggle="modal" data-bs-target="#modalUpdateReview" href="javascript:void(0)" class="text-primary text-decoration-underline me-2"
+                               th:onclick="|getReview(${review.id})|">Sửa</a>
                             <a href="javascript:void(0)" class="text-danger text-decoration-underline"
                                th:onclick="|deleteReview(${review.id})|">Xóa</a>
                         </div>
@@ -276,52 +232,91 @@
         </div>
     </div>
 </section>
-<!--section-->
+<!--section comment-->
 
-<!-- Modal -->
-<div class="modal fade" id="modalReview" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal review-->
+<div class="modal fade" id="modalReview" tabindex="-1" aria-labelledby="modalLabelReview" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Viết bình luận</h1>
+                <h1 class="modal-title fs-5" id="modalLabelReview">Đánh giá phim</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3 d-flex flex-column align-items-center justify-content-center">
+                    <img class="posterReview mb-3" th:src="${chiTietPhim.getPoster()}">
                     <h5 th:text="${chiTietPhim.getTitle()}"></h5>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-star" viewBox="0 0 16 16">
-                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-                        </svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-star" viewBox="0 0 16 16">
-                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-                        </svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-star" viewBox="0 0 16 16">
-                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-                        </svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-star" viewBox="0 0 16 16">
-                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-                        </svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-star" viewBox="0 0 16 16">
-                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-                        </svg>
+                    <div class="rating">
+                      <span class="star" data-rating="1">
+                        <i class="fs-5 bi bi-star-fill"></i>
+                      </span>
+                        <span class="star" data-rating="2">
+                        <i class="fs-5 bi bi-star-fill"></i>
+                      </span>
+                        <span class="star" data-rating="3">
+                        <i class="fs-5 bi bi-star-fill"></i>
+                      </span>
+                        <span class="star" data-rating="4">
+                        <i class="fs-5 bi bi-star-fill"></i>
+                      </span>
+                        <span class="star" data-rating="5">
+                        <i class="fs-5 bi bi-star-fill"></i>
+                      </span>
                     </div>
                 </div>
-                <label for="exampleFormControlTextarea1" class="form-label">Bình luận</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea class="form-control" id="review-content" rows="3"
+                placeholder="Hãy chia sẻ cảm nhận của bạn về phim..."></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary">Bình luận</button>
+                <button th:onclick="|submitReview(${chiTietPhim.id})|" type="button" class="btn btn btn-danger">Đánh giá</button>
             </div>
         </div>
     </div>
 </div>
+<!-- Modal review-->
+
+<!-- Modal update review-->
+<div class="modal fade" id="modalUpdateReview" tabindex="-1" aria-labelledby="modalLabelUpdateReview" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalLabelUpdateReview">Cập nhật đánh giá</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 d-flex flex-column align-items-center justify-content-center">
+                    <img class="posterReview mb-3" th:src="${chiTietPhim.getPoster()}">
+                    <h5 th:text="${chiTietPhim.getTitle()}"></h5>
+                    <div class="rating">
+                      <span class="star" data-rating="1">
+                        <i class="fs-5 bi bi-star-fill"></i>
+                      </span>
+                        <span class="star" data-rating="2">
+                        <i class="fs-5 bi bi-star-fill"></i>
+                      </span>
+                        <span class="star" data-rating="3">
+                        <i class="fs-5 bi bi-star-fill"></i>
+                      </span>
+                        <span class="star" data-rating="4">
+                        <i class="fs-5 bi bi-star-fill"></i>
+                      </span>
+                        <span class="star" data-rating="5">
+                        <i class="fs-5 bi bi-star-fill"></i>
+                      </span>
+                    </div>
+                </div>
+                <textarea class="form-control" id="update-review-content" rows="3"
+                          placeholder="Hãy chia sẻ cảm nhận của bạn về phim..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button th:onclick="|updateReview()|" type="button" class="btn btn btn-danger">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal update review-->
 
 <!--footer-->
 <footer class="footer">
@@ -429,8 +424,12 @@
     </div>
 </footer>
 <!--footer-->
+
+<!-- Link axios-->
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- Link js-->
 <script src="/web/js/movie-detail.js"></script>
+<!-- Link js bootstrap-->
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"

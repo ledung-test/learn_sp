@@ -26,6 +26,9 @@ public class ReviewService {
     public List<Review> findByMovie_IdOrderByCreatedAtDesc(Integer movieId) {
         return reviewRepository.findByMovie_IdOrderByCreatedAtDesc(movieId);
     }
+    public Review findById(Integer id){
+        return reviewRepository.findById(id).orElse(null);
+    }
 
 
     public Review createReview(UpsertReviewRequest request) {

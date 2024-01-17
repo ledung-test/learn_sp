@@ -16,10 +16,22 @@ public class ReviewResource {
     @Autowired
     private ReviewService reviewService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getReview(@PathVariable Integer id){
+        Review review = reviewService.findById(id);
+
+        UpsertReviewRequest request = new UpsertReviewRequest();
+        request.setContent(review.getContent());
+        request.setRating(review.getRating());
+        request.setMovieId(review.getMovie().getId());
+
+        return ResponseEntity.ok(request);
+    }
+
     @PostMapping
     public ResponseEntity<?> createReview(@RequestBody UpsertReviewRequest request) {
         Review review = reviewService.createReview(request);
-        return new ResponseEntity<>(review, HttpStatus.CREATED); // status code 201
+        return new ResponseEntity<>(review, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
