@@ -1,6 +1,5 @@
 //rating star
 const stars = document.querySelectorAll(".star");
-const ratingValue = document.getElementById("rating-value");
 
 let currentRating = 0;
 let currentId;
