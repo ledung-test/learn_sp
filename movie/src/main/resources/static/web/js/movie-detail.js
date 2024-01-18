@@ -2,7 +2,7 @@
 const stars = document.querySelectorAll(".star");
 
 let currentRating = 0;
-let currentId;
+let currentReviewId;
 let currentMovieId;
 stars.forEach((star) => {
     star.addEventListener("mouseover", handleMouseOver);
@@ -71,20 +71,16 @@ const getReview = (reviewId) => {
             currentRating = reviewData.rating;
             handleMouseOut();
             updateContent.value = reviewData.content;
-            currentId = reviewId;
+            currentReviewId = reviewId;
             currentMovieId = reviewData.movieId;
-        })
-        .then(function (updateResponse) {
-
-        })
-        .catch(function (error) {
+        }).catch(function (error) {
             console.error(error);
         });
 }
 //Update
 const updateReview = () => {
     const updateContent = document.getElementById("update-review-content");
-    const url = `/api/reviews/${currentId}`;
+    const url = `/api/reviews/${currentReviewId}`;
     axios.put(url, {
         rating: currentRating,
         content: updateContent.value,
