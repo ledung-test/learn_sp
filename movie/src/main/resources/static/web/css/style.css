@@ -37,9 +37,11 @@ p{
     padding: 0.5rem;
     background-color: #e66f20;
 }
-.blog-item i{
+.blog-item i
+{
     color: white;
 }
+
 .rating-avatar img {
     height: 70px;
     width: 70px;

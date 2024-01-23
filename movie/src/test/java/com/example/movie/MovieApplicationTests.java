@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +35,10 @@ class MovieApplicationTests {
     private ReviewRepository reviewRepository;
     @Autowired
     private BlogRepository blogRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Test
     void test_actor(){
         Faker faker = new Faker();
@@ -81,7 +86,7 @@ class MovieApplicationTests {
             User user = User.builder()
                     .name(name)
                     .email(faker.internet().emailAddress())
-                    .password("123")
+                    .password(bCryptPasswordEncoder.encode("123"))
                     .avatar(generateLinkImage(name))
                     .role(i == 0 || i == 1 ? UserRole.ADMIN : UserRole.USER)
                     .build();

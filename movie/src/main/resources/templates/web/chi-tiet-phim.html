@@ -79,6 +79,8 @@
                         Tìm kiếm
                     </button>
                 </form>
+                <a th:if="${user} == null" class="nav-link text-light ms-4" th:href="@{/dang-nhap}">Đăng nhập</a>
+                <a th:unless="${user} == null" class="nav-link text-light ms-4" th:text="|Hi, ${user.getName()}|"></a>
             </div>
         </div>
     </nav>
@@ -189,15 +191,19 @@
 <!--section comment-->
 <section>
     <div class="container my-4">
-        <div class="d-flex justify-content-between mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="text-light">Bình luận</h2>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn btn-danger mx-2 fs-6" data-bs-toggle="modal"
+            <button th:if="${user} != null" type="button" class="btn btn btn-danger mx-2 fs-6" data-bs-toggle="modal"
                     data-bs-target="#modalReview">
                 Đánh giá
             </button>
-        </div>
+            <span th:unless="${user} != null" class="nav-link text-light ms-4" >Vui lòng
+            <a class="text-primary" th:href="@{/dang-nhap}">Đăng nhập</a>
+                để bình luận
+            </span>
 
+        </div>
         <div class="row">
             <div class="review-list">
                 <div class="rating-item d-flex align-items-center mb-3 pb-3" th:each="review : ${reviews}">
@@ -220,11 +226,14 @@
                             </p>
                         </div>
                         <p class="rating-content mt-1 mb-0" th:text="${review.content}"></p>
-                        <div class="rating-action mt-2">
-                            <a data-bs-toggle="modal" data-bs-target="#modalUpdateReview" href="javascript:void(0)" class="text-primary text-decoration-underline me-2"
-                               th:onclick="|getReview(${review.id})|">Sửa</a>
-                            <a href="javascript:void(0)" class="text-danger text-decoration-underline"
-                               th:onclick="|deleteReview(${review.id})|">Xóa</a>
+                        <div th:if="${user} != null" class="rating-action mt-2">
+                            <div th:if="${user.id == review.user.id}">
+                                <a data-bs-toggle="modal" data-bs-target="#modalUpdateReview" href="javascript:void(0)"
+                                   class="text-primary text-decoration-underline me-2"
+                                   th:onclick="|getReview(${review.id})|">Sửa</a>
+                                <a href="javascript:void(0)" class="text-danger text-decoration-underline"
+                                   th:onclick="|deleteReview(${review.id})|">Xóa</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -265,11 +274,13 @@
                     </div>
                 </div>
                 <textarea class="form-control" id="review-content" rows="3"
-                placeholder="Hãy chia sẻ cảm nhận của bạn về phim..."></textarea>
+                          placeholder="Hãy chia sẻ cảm nhận của bạn về phim..."></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button th:onclick="|submitReview(${chiTietPhim.id})|" type="button" class="btn btn btn-danger">Đánh giá</button>
+                <button th:onclick="|submitReview(${chiTietPhim.id})|" type="button" class="btn btn btn-danger">Đánh
+                    giá
+                </button>
             </div>
         </div>
     </div>
@@ -277,7 +288,8 @@
 <!-- Modal review-->
 
 <!-- Modal update review-->
-<div class="modal fade" id="modalUpdateReview" tabindex="-1" aria-labelledby="modalLabelUpdateReview" aria-hidden="true">
+<div class="modal fade" id="modalUpdateReview" tabindex="-1" aria-labelledby="modalLabelUpdateReview"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -424,16 +436,15 @@
     </div>
 </footer>
 <!--footer-->
-
 <!-- Link axios-->
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<!-- Link js-->
-<script src="/web/js/movie-detail.js"></script>
 <!-- Link js bootstrap-->
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"
 ></script>
+<!-- Link js-->
+<script src="/web/js/movie-detail.js"></script>
 </body>
 </html>

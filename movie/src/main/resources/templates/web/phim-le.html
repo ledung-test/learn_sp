@@ -76,6 +76,8 @@
                         Tìm kiếm
                     </button>
                 </form>
+                <a th:if="${user} == null" class="nav-link text-light ms-4" th:href="@{/dang-nhap}">Đăng nhập</a>
+                <a th:unless="${user} == null" class="nav-link text-light ms-4" th:text="|Hi, ${user.getName()}|"></a>
             </div>
         </div>
     </nav>

@@ -1,5 +1,6 @@
 package com.example.movie.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,7 +12,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "reviews")
@@ -45,5 +45,15 @@ public class Review {
             case 5 -> "Tuyệt vời";
             default -> "Chưa có đánh giá";
         };
+    }
+    @PrePersist // Trước khi lưu dữ liệu vào database
+    public void prePersist() {
+        createdAt = new Date();
+        updatedAt = new Date();
+    }
+
+    @PreUpdate // Trước khi cập nhật dữ liệu vào database
+    public void preUpdate() {
+        updatedAt = new Date();
     }
 }

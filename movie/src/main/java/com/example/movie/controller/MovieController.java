@@ -3,9 +3,11 @@ package com.example.movie.controller;
 
 import com.example.movie.entity.Movie;
 import com.example.movie.entity.Review;
+import com.example.movie.entity.User;
 import com.example.movie.model.enums.MovieType;
 import com.example.movie.service.MovieService;
 import com.example.movie.service.ReviewService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,8 @@ public class MovieController {
     private MovieService movieService;
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private HttpSession session;
     @GetMapping("/phim-bo")
     public String phimBo(Model model,
                             @RequestParam(required = false, defaultValue = "1") Integer page,
@@ -30,6 +34,10 @@ public class MovieController {
         Page<Movie> pageData = movieService.findByTypeAndStatus(MovieType.PHIM_BO, true, page, size);
         model.addAttribute("pageData", pageData); // hiện thị dữ liệu phân trang
         model.addAttribute("currentPage", page); // active trang hiện tại
+        User user = (User) session.getAttribute("currentUser");
+        if (user != null){
+            model.addAttribute("user", user);
+        }
         return "web/phim-bo";
     }
 
@@ -40,6 +48,10 @@ public class MovieController {
         Page<Movie> pageData = movieService.findByTypeAndStatus(MovieType.PHIM_LE, true, page, size);
         model.addAttribute("pageData", pageData); // hiện thị dữ liệu phân trang
         model.addAttribute("currentPage", page); // active trang hiện tại
+        User user = (User) session.getAttribute("currentUser");
+        if (user != null){
+            model.addAttribute("user", user);
+        }
         return "web/phim-le";
     }
 
@@ -50,6 +62,10 @@ public class MovieController {
         Page<Movie> pageData = movieService.findByTypeAndStatus(MovieType.PHIM_CHIEU_RAP, true, page, size);
         model.addAttribute("pageData", pageData); // hiện thị dữ liệu phân trang
         model.addAttribute("currentPage", page); // active trang hiện tại
+        User user = (User) session.getAttribute("currentUser");
+        if (user != null){
+            model.addAttribute("user", user);
+        }
         return "web/phim-chieu-rap";
     }
 
@@ -63,6 +79,10 @@ public class MovieController {
         model.addAttribute("deXuat", deXuat);
         List<Review> reviewList = reviewService.findByMovie_IdOrderByCreatedAtDesc(id);
         model.addAttribute("reviews", reviewList);
+        User user = (User) session.getAttribute("currentUser");
+        if (user != null){
+            model.addAttribute("user", user);
+        }
         return "web/chi-tiet-phim";
     }
 }

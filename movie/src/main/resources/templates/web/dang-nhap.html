@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Trang chủ</title>
+    <title>Đăng nhập</title>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -72,126 +72,55 @@
                         Tìm kiếm
                     </button>
                 </form>
-                <a th:if="${user} == null" class="nav-link text-light ms-4" th:href="@{/dang-nhap}">Đăng nhập</a>
-                <a th:unless="${user} == null" class="nav-link text-light ms-4" th:text="|Hi, ${user.getName()}|"></a>
+                <a class="nav-link text-light ms-4" th:href="@{/dang-ky}">Đăng ký</a>
             </div>
         </div>
     </nav>
 </header>
 <!--header-->
 
-<!--section-->
 <section>
-    <div class="container mt-4">
-        <div class="movie-type-heading d-flex justify-content-between">
-            <h2 class="mb-4 text-light">Đề xuất</h2>
-        </div>
-        <div class="row">
-            <div class="col-md-2 mb-2" th:each="movie : ${deXuat.getContent()}">
-                <a th:href="@{/phim/{id}/{slug} (id = ${movie.getId()}, slug = ${movie.getSlug()})}">
-                    <div class="card text-center position-relative">
-                        <span class="badge badge-secondary episode-badge"></span>
-                        <img
-                                th:src="${movie.getPoster()}"
-                                class="card-img"
-                                alt="..."
-                        />
-                        <div class="card-body">
-                            <a class="card-text" th:text="${movie.getTitle()}"></a>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-<!--section-->
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center" style="height: 65vh;">
+            <div class="col-4 border border-1 p-4">
+                <h1 class="text-light">Đăng nhập</h1>
 
-<!--section-->
-<section>
-    <div class="container mt-4">
-        <div class="movie-type-heading d-flex justify-content-between">
-            <h2 class="mb-4 text-light">Phim bộ</h2>
-            <a class="px-4 pt-3" th:href="@{/phim-bo}"
-            >Xem tất cả</a
-            >
-        </div>
-        <div class="row">
-            <div class="col-md-2 mb-2" th:each="movie : ${phimBo.getContent()}">
-                <a th:href="@{/phim/{id}/{slug} (id = ${movie.getId()}, slug = ${movie.getSlug()})}">
-                    <div class="card text-center position-relative">
-                        <span class="badge badge-secondary episode-badge"></span>
-                        <img
-                                th:src="${movie.getPoster()}"
-                                class="card-img"
-                                alt="..."
-                        />
-                        <div class="card-body">
-                            <a class="card-text" th:text="${movie.getTitle()}"></a>
-                        </div>
-                    </div>
-                </a>
+                <div class="mb-3 input-group-lg">
+                    <label for="inputEmail" class="form-label text-light"
+                    >Email</label
+                    >
+                    <input
+                            type="email"
+                            class="form-control"
+                            id="inputEmail"
+                            aria-describedby="emailHelp"
+                    />
+                </div>
+                <div class="mb-3 input-group-lg">
+                    <label for="inputPassword" class="form-label text-light"
+                    >Mật khẩu</label
+                    >
+                    <input
+                            type="password"
+                            class="form-control"
+                            id="inputPassword"
+                    />
+                </div>
+                <div class="mb-3 form-check">
+                    <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="exampleCheck1"
+                    />
+                    <label class="form-check-label text-light" for="exampleCheck1"
+                    >Ghi nhớ</label
+                    >
+                </div>
+                <button th:onclick="submitFormLogin()" type="submit" class="btn btn-primary">Đăng nhập</button>
             </div>
         </div>
     </div>
 </section>
-<!--section-->
-
-<!--section-->
-<section>
-    <div class="container mt-4">
-        <div class="movie-type-heading d-flex justify-content-between">
-            <h2 class="mb-4 text-light">Phim lẻ</h2>
-            <a class="px-4 pt-3" th:href="@{/phim-le}"
-            >Xem tất cả</a
-            >
-        </div>
-        <div class="row">
-            <div class="col-md-2 mb-2" th:each="movie : ${phimLe.getContent()}">
-                <a th:href="@{/phim/{id}/{slug} (id = ${movie.getId()}, slug = ${movie.getSlug()})}">
-                    <div class="card text-center position-relative">
-                        <span class="badge badge-secondary episode-badge"></span>
-                        <img
-                                th:src="${movie.getPoster()}"
-                                class="card-img"
-                                alt="..."
-                        />
-                        <div class="card-body">
-                            <a class="card-text" th:text="${movie.getTitle()}"></a>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-<!--section-->
-
-<!--blog-->
-<section>
-    <div class="container my-4">
-        <div class="blog-heading d-flex justify-content-between">
-            <h2 class="mb-4 text-light">Tin tức</h2>
-            <a class="px-4 py-2" th:href="@{/tin-tuc}"
-            >Xem tất cả</a
-            >
-        </div>
-        <div class="row">
-            <div class="blog-item col-6" th:each="blog : ${blogs.getContent()}">
-                <a th:href="@{/tin-tuc/{id}/{slug} (id = ${blog.getId()}, slug = ${blog.getSlug()})}">
-                    <h5 th:text="${blog.getTitle()}"></h5>
-                </a>
-                <i th:text="${blog.getPublishedAt()}"></i>
-                <a th:href="@{/tin-tuc/{id}/{slug} (id = ${blog.getId()}, slug = ${blog.getSlug()})}">
-                    <p class="pe-4"
-                       style="max-height: 3.6em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;"
-                       th:text="${blog.getContent()}"></p>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-<!--blog-->
 
 <!--footer-->
 <footer>
@@ -299,11 +228,14 @@
     </div>
 </footer>
 <!--footer-->
-
+<!-- Link axios-->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"
 ></script>
+<!-- Link js-->
+<script src="/web/js/login.js"></script>
 </body>
 </html>

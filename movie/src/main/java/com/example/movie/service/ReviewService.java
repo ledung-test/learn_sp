@@ -9,6 +9,7 @@ import com.example.movie.model.request.UpsertReviewRequest;
 import com.example.movie.reponsitory.MovieRepository;
 import com.example.movie.reponsitory.ReviewRepository;
 import com.example.movie.reponsitory.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,8 @@ public class ReviewService {
     private UserRepository userRepository;
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private HttpSession session;
 
     public List<Review> findByMovie_IdOrderByCreatedAtDesc(Integer movieId) {
         return reviewRepository.findByMovie_IdOrderByCreatedAtDesc(movieId);
@@ -32,10 +35,7 @@ public class ReviewService {
 
 
     public Review createReview(UpsertReviewRequest request) {
-        // TODO: Giả định current user là user có id = 1. Sau này current user sẽ là user đang login
-        Integer currentUserId = 1;
-        User currentUser = userRepository.findById(currentUserId) // Kiểm tra xem user có tồn tại không
-                .orElseThrow(() -> new ResourceNotFoundException("User không tồn tại"));
+        User currentUser = (User) session.getAttribute("currentUser");
 
         Movie movie = movieRepository.findById(request.getMovieId()) // Kiểm tra xem movie có tồn tại không
                 .orElseThrow(() -> new ResourceNotFoundException("Phim không tồn tại"));
@@ -53,9 +53,8 @@ public class ReviewService {
     }
 
     public Review updateReview(Integer id, UpsertReviewRequest upsertReviewRequest) {
-        Integer currentUserId = 1;
+        User currentUser = (User) session.getAttribute("currentUser");
         Review review = reviewRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Review không tồn tại"));
-        User currentUser = userRepository.findById(currentUserId).orElseThrow(() -> new ResourceNotFoundException("User không tồn tại"));
         Movie currentMovie = movieRepository.findById(upsertReviewRequest.getMovieId()).orElseThrow(() -> new ResourceNotFoundException("Movie không tồn tại"));
         if (!review.getUser().getId().equals(currentUser.getId())){
             throw new BadRequestException("Bạn không có quyền sửa review này");
@@ -70,8 +69,7 @@ public class ReviewService {
     }
 
     public void deleteReview(Integer id) {
-        Integer currentUserId = 1;
-        User currentUser = userRepository.findById(currentUserId).orElseThrow(() -> new ResourceNotFoundException("User không tồn tại"));
+        User currentUser = (User) session.getAttribute("currentUser");
         Review review = reviewRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Review không tồn tại"));
         if (!review.getUser().getId().equals(currentUser.getId())){
             throw new BadRequestException("Bạn không có quyền sửa review này");
