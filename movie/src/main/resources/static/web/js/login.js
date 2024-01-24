@@ -1,4 +1,5 @@
 const submitFormLogin = () => {
+    const prevPage = sessionStorage.getItem("prevPage");
     const email = document.getElementById("inputEmail");
     const password = document.getElementById("inputPassword");
     const url = `/api/auth/login`;
@@ -7,7 +8,9 @@ const submitFormLogin = () => {
         password: password.value
     }).then(function (response) {
         alert('Đăng nhập thành công');
-        window.location.href = "/";
+        setTimeout(function () {
+           window.location.href = prevPage;
+        }, 1000);
     }).catch(function (error) {
         console.log(error);
     });
