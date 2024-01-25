@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" th:fragment="layout(title, css, content, js)">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:replace="${title}"></title>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/fontawesome-free/css/all.min.css}" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/admin/dist/css/adminlte.min.css}" />
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}" />
+
+    <th:block th:replace="${css}"></th:block>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- nav -->
+    <th:block th:replace="~{admin/fragments/nav.html}"></th:block>
+    <!-- sidebar -->
+    <th:block th:replace="~{admin/fragments/sidebar.html}"></th:block>
+    <!-- content -->
+    <div class="content-wrapper">
+        <th:block th:replace="${content}"></th:block>
+    </div>
+</div>
+
+<th:block th:replace="${js}"></th:block>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- overlayScrollbars -->
+<script th:src="@{/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.js}"></script>
+</body>
+</html>

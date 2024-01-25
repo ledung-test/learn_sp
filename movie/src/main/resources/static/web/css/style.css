@@ -48,7 +48,7 @@ p{
     object-fit: cover;
     border-radius: 50%;
 }
-.nav-item .nav-link,
+.nav-item a,
 .nav-item i{
     color: white;
 }
@@ -73,4 +73,7 @@ p{
 .star:hover,
 .star.active {
     color: gold;
+}
+#main-menu .navbar-nav .nav-item a.active{
+    color: #1cc749 !important;
 }
