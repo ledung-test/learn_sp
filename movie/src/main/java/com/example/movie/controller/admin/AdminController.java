@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @GetMapping("/blog")
+    @GetMapping("/blogs")
     public String getBlog(){
         return "admin/blog/blog";
     }
-    @GetMapping("/blog/own-blogs")
+    @GetMapping("/blogs/own-blogs")
     public String getOwnBlogs(){
         return "admin/blog/own-blog";
     }
-    @GetMapping("/blog/create")
+    @GetMapping("/blogs/create")
     public String getCreateBlog(){
         return "admin/blog/create";
     }
