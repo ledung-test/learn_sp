@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    @GetMapping("")
-    public String getAdmin(){
-        return "admin/index";
-    }
+
     @GetMapping("/blog")
     public String getBlog(){
         return "admin/blog/blog";
@@ -25,8 +22,8 @@ public class AdminController {
     public String getCreateBlog(){
         return "admin/blog/create";
     }
-    @GetMapping("/blog/detail")
-    public String getDetailBlog(){
+    @GetMapping("blogs/{id}/detail")
+    public String getDetailBlog(@PathVariable Integer id){
         return "admin/blog/detail";
     }
 
