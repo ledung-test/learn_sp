@@ -44,17 +44,11 @@
                     <button type="button" class="btn btn-default">
                         <i class="fas fa-chevron-left"></i> Quay lại
                     </button>
-                    <button type="button" class="btn btn-info px-4">
-                        Lưu
+                    <button th:onclick="createBlog()" type="button" class="btn btn-info px-4">
+                        Tạo mới
                     </button>
                     <button type="button" class="btn btn-primary px-4">
                         Preview
-                    </button>
-                </div>
-
-                <div class="col-6 d-flex justify-content-end">
-                    <button type="button" class="btn btn-danger px-4">
-                        Xóa
                     </button>
                 </div>
             </div>
@@ -85,51 +79,23 @@
                                     <div class="form-group">
                                         <label>Trạng thái</label>
                                         <select id="status" class="form-control">
-                                            <option value="0">
+                                            <option value="false">
                                                 Nháp
                                             </option>
-                                            <option value="1">
+                                            <option value="true">
                                                 Công khai
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Danh mục</label>
-                                        <div class="select2-purple">
-                                            <select class="select2 form-control" multiple="multiple" id="category">
-                                                <option>
-                                                    Java
-                                                </option>
-                                                <option>
-                                                    Golang
-                                                </option>
-                                                <option>
-                                                    React
-                                                </option>
-                                                <option>
-                                                    Lập trình web
-                                                </option>
-                                                <option>
-                                                    Database
-                                                </option>
-                                                <option>
-                                                    Tips Trick
-                                                </option>
-                                                <option>
-                                                    Devops
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="thumbnail-preview-container mb-3">
-                                            <img src="" alt="" id="thumbnail"/>
-                                        </div>
-                                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
-                                                data-target="#modal-xl">
-                                            Chọn hình ảnh
-                                        </button>
-                                    </div>
+<!--                                    <div class="form-group">-->
+<!--                                        <div class="thumbnail-preview-container mb-3">-->
+<!--                                            <img alt="" id="image-preview"/>-->
+<!--                                        </div>-->
+<!--                                        <label for="image" class="btn btn-info btn-flat rounded">-->
+<!--                                            Chọn hình ảnh-->
+<!--                                        </label>-->
+<!--                                        <input type="file" id="image" class="d-none">-->
+<!--                                    </div>-->
                                 </div>
                             </div>
                         </div>
@@ -139,29 +105,6 @@
         </div>
     </section>
 
-    <div class="modal fade" id="modal-xl" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Extra Large Modal</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>One fine body…</p>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary">
-                        Save changes
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </th:block>
 <!--js-->
 <th:block id="js">
@@ -184,6 +127,23 @@
                 codeSyntaxHighlighting: true,
             },
         });
+        function createBlog(){
+            const updateTitle = document.getElementById("title");
+            const updateDescription = document.getElementById("description");
+            const updateStatus = document.getElementById("status");
+            axios.post(`/api/admin/blogs`,{
+                    title: updateTitle.value,
+                    content: easyMDE.value(),
+                    description: updateDescription.value,
+                    status: updateStatus.value
+                }
+            ).then(res => {
+                alert('Tạo mới blog thành công.')
+                window.location.href = "/admin/blogs";
+            }).catch(err => {
+                alert(err.response.data.message)
+            })
+        }
     </script>
 </th:block>
 </body>

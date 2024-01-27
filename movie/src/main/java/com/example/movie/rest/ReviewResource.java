@@ -16,18 +16,6 @@ public class ReviewResource {
     @Autowired
     private ReviewService reviewService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getReview(@PathVariable Integer id){
-        Review review = reviewService.findById(id);
-
-        UpsertReviewRequest request = new UpsertReviewRequest();
-        request.setContent(review.getContent());
-        request.setRating(review.getRating());
-        request.setMovieId(review.getMovie().getId());
-
-        return ResponseEntity.ok(request);
-    }
-
     @PostMapping
     public ResponseEntity<?> createReview(@RequestBody UpsertReviewRequest request) {
         Review review = reviewService.createReview(request);
@@ -41,7 +29,7 @@ public class ReviewResource {
     }
 
     @DeleteMapping ("/{id}")
-    public ResponseEntity<?> updateReview(@PathVariable Integer id){
+    public ResponseEntity<?> deleteReview(@PathVariable Integer id){
         reviewService.deleteReview(id);
         return ResponseEntity.noContent().build();
     }

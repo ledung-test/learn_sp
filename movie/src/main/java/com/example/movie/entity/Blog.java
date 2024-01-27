@@ -33,4 +33,15 @@ public class Blog {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User user;
+
+    @PrePersist // Trước khi lưu dữ liệu vào database
+    public void prePersist() {
+        createdAt = new Date();
+        updatedAt = new Date();
+    }
+
+    @PreUpdate // Trước khi cập nhật dữ liệu vào database
+    public void preUpdate() {
+        updatedAt = new Date();
+    }
 }

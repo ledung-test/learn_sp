@@ -48,26 +48,18 @@
                                 <thead>
                                 <tr>
                                     <th>Tiêu đề</th>
-                                    <th>Danh mục</th>
                                     <th>Trạng thái</th>
                                     <th>Ngày tạo</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <tr th:each="blog : ${blogsUser}">
                                     <td>
-                                        <a href="./blog-detail.html">Khai giảng khóa
-                                            Java Spring Boot 12A
-                                            - song song 2 hình
-                                            thức offline /
-                                            online đáp ứng nhu
-                                            cầu đào tạo từ xa</a>
+                                        <a href="./blog-detail.html" th:text="${blog.getTitle()}"></a>
                                     </td>
-                                    <td>
-                                        Java, Golang, Springboot
-                                    </td>
-                                    <td>Công khai</td>
-                                    <td>06-07-2022</td>
+                                    <td th:if="${blog.getStatus() == true}">Công khai</td>
+                                    <td th:if="${blog.getStatus() == false}">Nháp</td>
+                                    <td th:text="${#dates.format(blog.getCreatedAt(), 'dd/MM/yyyy')}"></td>
                                 </tr>
                                 </tbody>
                             </table>
