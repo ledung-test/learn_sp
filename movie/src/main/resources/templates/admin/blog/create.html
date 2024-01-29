@@ -3,13 +3,12 @@
       th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: #main-content}, ~{:: #js})}">
 <head>
     <meta charset="UTF-8">
-    <title>Create</title>
+    <title>Thêm mới bài viết</title>
     <!--css-->
     <th:block id="css">
-        <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css" />
-
-        <link rel="stylesheet" th:href="@{/admin/plugins/select2/css/select2.min.css}" />
+        <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/plugins/summernote/summernote-bs4.min.css}"/>
+        <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/plugins/select2/css/select2.min.css}"/>
+        <link rel="stylesheet" th:href="@{/admin/plugins/select2/css/select2.min.css}"/>
         <link rel="stylesheet" th:href="@{/admin/dist/css/style.css}">
     </th:block>
 </head>
@@ -57,47 +56,41 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <label>Tiêu đề</label>
-                                        <input type="text" class="form-control" id="title"/>
+                            <form id="form-create-blog">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Tiêu đề</label>
+                                            <input type="text" class="form-control" id="title" name="title"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Nội dung</label>
+                                            <textarea id="content" name="content"></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Mô tả ngắn</label>
+                                            <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+                                        </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label>Nội dung</label>
-                                        <textarea id="content"></textarea>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Trạng thái</label>
+                                            <select id="status" class="form-control" name="status">
+                                                <option value="false">
+                                                    Nháp
+                                                </option>
+                                                <option value="true">
+                                                    Công khai
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label>Mô tả ngắn</label>
-                                        <textarea id="description" class="form-control" rows="3"></textarea>
-                                    </div>
                                 </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Trạng thái</label>
-                                        <select id="status" class="form-control">
-                                            <option value="false">
-                                                Nháp
-                                            </option>
-                                            <option value="true">
-                                                Công khai
-                                            </option>
-                                        </select>
-                                    </div>
-<!--                                    <div class="form-group">-->
-<!--                                        <div class="thumbnail-preview-container mb-3">-->
-<!--                                            <img alt="" id="image-preview"/>-->
-<!--                                        </div>-->
-<!--                                        <label for="image" class="btn btn-info btn-flat rounded">-->
-<!--                                            Chọn hình ảnh-->
-<!--                                        </label>-->
-<!--                                        <input type="file" id="image" class="d-none">-->
-<!--                                    </div>-->
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -108,43 +101,101 @@
 </th:block>
 <!--js-->
 <th:block id="js">
-    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
-
+    <script th:src="@{/admin-assets/admin-lte/plugins/summernote/summernote-bs4.min.js}"></script>
+    <script th:src="@{/admin-assets/admin-lte/plugins/select2/js/select2.full.min.js}"></script>
     <script th:src="@{/admin/plugins/select2/js/select2.full.min.js}"></script>
 
-    <script>
+    <script th:inline="javascript">
+
+        $('#content').summernote({
+            height: 400,
+        })
+
+        $("#content").css({
+            "display": "block",
+            "height": "0",
+            "padding": "0",
+            "border": "none"
+        })
         //Initialize Select2 Elements
         $(".select2").select2();
 
-        // Initialize editor
-        const easyMDE = new EasyMDE({
-            element: document.getElementById("content"),
-            spellChecker: false,
-            maxHeight: "500px",
-            renderingConfig: {
-                codeSyntaxHighlighting: true,
-            },
-        });
-        function createBlog(){
+        function validate(){
+            $("#content").css({
+                "display": "block",
+                "height": "0",
+                "padding": "0",
+                "border": "none"
+            })
+            $('#form-create-blog').validate({
+                rules: {
+                    title: {
+                        required: true
+                    },
+                    content: {
+                        required: true
+                    },
+                    description: {
+                        required: true
+                    },
+                    status: {
+                        required: true
+                    }
+                },
+                messages: {
+                    title: {
+                        required: "Tiêu đề không được để trống"
+                    },
+                    content: {
+                        required: "Nội dung không được để trống"
+                    },
+                    description: {
+                        required: "Mô tả ngắn không được để trống"
+                    },
+                    status: {
+                        required: "Trạng thái không được để trống"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        }
+        function createBlog() {
             const updateTitle = document.getElementById("title");
+            const updateContent = document.getElementById('content');
             const updateDescription = document.getElementById("description");
             const updateStatus = document.getElementById("status");
-            axios.post(`/api/admin/blogs`,{
+            validate();
+            if (!$('#form-create-blog').valid()) {
+                return;
+            }
+            axios.post(`/api/admin/blogs`, {
                     title: updateTitle.value,
-                    content: easyMDE.value(),
+                    content: updateContent.value,
                     description: updateDescription.value,
-                    status: updateStatus.value
+                    status: updateStatus.value === 'true'
                 }
             ).then(res => {
-                alert('Tạo mới blog thành công.')
-                window.location.href = "/admin/blogs";
+                toastr.success('Tạo mới blog thành công.');
+                setTimeout(function () {
+                    window.location.href = `/admin/blogs/${res.data.id}/detail`;
+                }, 1500)
             }).catch(err => {
-                alert(err.response.data.message)
+                console.log(err);
             })
         }
     </script>
+
+
 </th:block>
 </body>
 </html>

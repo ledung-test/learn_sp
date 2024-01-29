@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: #main-content}, ~{:: #js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết đạo diễn</title>
+    <!--css-->
+    <th:block id="css">
+        <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css"/>
+
+        <link rel="stylesheet" th:href="@{/admin/plugins/select2/css/select2.min.css}"/>
+        <link rel="stylesheet" th:href="@{/admin/dist/css/style.css}">
+    </th:block>
+</head>
+<body>
+<th:block id="main-content">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a th:href="@{/admin/directors}">Đạo diễn</a>
+                        </li>
+                        <li class="breadcrumb-item active" th:text="${director.getName()}"></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row py-2">
+                <div class="col-6">
+                    <button type="button" class="btn btn-default">
+                        <i class="fas fa-chevron-left"></i> Quay lại
+                    </button>
+                    <button th:onclick="updateDirector()" type="button" class="btn btn-info px-4">
+                        Lưu
+                    </button>
+                    <button type="button" class="btn btn-primary px-4">
+                        Preview
+                    </button>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                    <button th:onclick="deleteDirector()" type="button" class="btn btn-danger px-4">
+                        Xóa
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="form-create-blog">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Tên đạo diễn</label>
+                                            <input th:value="${director.getName()}" type="text" class="form-control"
+                                                   id="nameDr" name="nameDr"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Ngày sinh</label>
+                                            <input th:value="${#dates.format(director.getBirthday(), 'yyyy-MM-dd')}" type="date" class="form-control"
+                                                   id="birthdayDr" name="birthdayDr">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mô tả ngắn</label>
+                                            <textarea th:text="${director.getDescription()}" id="descriptionDr"
+                                                      name="descriptionDr" class="form-control" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="thumbnail-preview-container mb-3 border border-1">
+                                                <img th:src="${director.avatar}" alt="" id="image-preview"/>
+                                            </div>
+                                            <label for="image" class="btn btn-info btn-flat rounded">
+                                                Chọn hình ảnh
+                                            </label>
+                                            <input type="file" id="image" class="d-none">
+                                        </div>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+</th:block>
+<!--js-->
+<th:block id="js">
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+
+    <script th:src="@{/admin/plugins/select2/js/select2.full.min.js}"></script>
+    <script th:inline="javascript">
+        const director = [[${director}]];
+
+        //Initialize Select2 Elements
+        $(".select2").select2();
+
+        const imagePreview = document.getElementById('image-preview')
+        const imageInput = document.getElementById('image')
+
+        imageInput.addEventListener("change", (e) => {
+            // Lấy ra file vừa được chọn
+            const file = e.target.files[0]
+            // Tạo đối tượng form data để đưa dữ liệu vào gửi đi
+            const formData = new FormData()
+            formData.append('file', file)
+            // Gọi api sử dung axios
+            axios.post(`/api/admin/directors/${director.id}/upload-thumbnail`, formData)
+                .then(res => {
+                    // Hiển thị hình ảnh vừa được upload lên
+                    imagePreview.src = res.data;
+                    toastr.success('Upload hình ảnh thành công.');
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        })
+        function validate() {
+            $("#content").css({
+                "display": "block",
+                "height": "0",
+                "padding": "0",
+                "border": "none"
+            })
+            $('#form-create-blog').validate({
+                rules: {
+                    nameDr: {
+                        required: true
+                    },
+                    birthdayDr: {
+                        required: true,
+                    },
+                    descriptionDr: {
+                        required: true
+                    }
+                },
+                messages: {
+                    nameDr: {
+                        required: "Tên không được để trống"
+                    },
+                    birthdayDr: {
+                        required: "Ngày sinh không được để trống",
+                    },
+                    descriptionDr: {
+                        required: "Mô tả ngắn không được để trống"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        }
+
+        function updateDirector() {
+            const nameDr = document.getElementById("nameDr");
+            const birthdayDr = document.getElementById('birthdayDr');
+            const descriptionDr = document.getElementById("descriptionDr");
+            validate();
+            if (!$('#form-create-blog').valid()) {
+                return;
+            }
+            axios.put(`/api/admin/directors/${director.id}`, {
+                    nameDr: nameDr.value,
+                    birthdayDr: birthdayDr.value,
+                    descriptionDr: descriptionDr.value,
+                }
+            ).then(res => {
+                toastr.success('Cập nhật thông tin đạo diễn thành công.')
+            }).catch(err => {
+                console.log(err.response.data.message)
+            })
+        }
+        function deleteDirector(){
+            const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa đạo diễn này này?');
+            if (!isConfirmed) return;
+            const url = `/api/admin/directors/${director.id}`;
+            axios.delete(url)
+                .then(function (response) {
+                    toastr.success('Xóa đạo diễn thành công');
+                    setTimeout(function () {
+                        window.location.href = '/admin/directors'
+                    }, 1500)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    </script>
+</th:block>
+</body>
+</html>

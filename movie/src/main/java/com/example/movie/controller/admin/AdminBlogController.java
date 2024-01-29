@@ -30,10 +30,8 @@ public class AdminBlogController {
     }
     @GetMapping("/own-blogs")
     public String getOwnBlogs(Model model){
-        User user = (User) session.getAttribute("currentUser");
-        int userId = user.getId();
         //Lấy tất cả bài viết sắp xếp theo created giảm dần thuộc về 1 user
-        List<Blog> blogList = adminBlogService.findByUserIdOrderByCreatedAtDesc(userId);
+        List<Blog> blogList = adminBlogService.findByUserIdOrderByCreatedAtDesc();
         model.addAttribute("blogsUser", blogList);
         return "admin/blog/own-blog";
     }
@@ -44,7 +42,7 @@ public class AdminBlogController {
     @GetMapping("/{id}/detail")
     public String getDetailBlog(@PathVariable Integer id, Model model){
         //Lấy bài viết theo id
-        Blog blog = adminBlogService.findAllById(id);
+        Blog blog = adminBlogService.detailBlog(id);
         model.addAttribute("blog", blog);
         return "admin/blog/detail";
     }

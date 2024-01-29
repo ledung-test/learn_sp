@@ -3,12 +3,11 @@
       th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: #main-content}, ~{:: #js})}">
 <head>
     <meta charset="UTF-8">
-    <title>Admin</title>
+    <title>Chi tiết blog</title>
     <!--css-->
     <th:block id="css">
-        <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css"/>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css"/>
-
+        <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/plugins/summernote/summernote-bs4.min.css}"/>
+        <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/plugins/select2/css/select2.min.css}"/>
         <link rel="stylesheet" th:href="@{/admin/plugins/select2/css/select2.min.css}"/>
         <link rel="stylesheet" th:href="@{/admin/dist/css/style.css}">
     </th:block>
@@ -25,11 +24,9 @@
                             <a href="#">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="#">Blog</a>
+                            <a th:href="@{/admin/blogs}">Blogs</a>
                         </li>
-                        <li class="breadcrumb-item active" th:text="${blog.getTitle()}">
-
-                        </li>
+                        <li class="breadcrumb-item active" th:text="${blog.getTitle()}"></li>
                     </ol>
                 </div>
             </div>
@@ -114,25 +111,25 @@
 </th:block>
 <!--js-->
 <th:block id="js">
-    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
-
+    <script th:src="@{/admin-assets/admin-lte/plugins/summernote/summernote-bs4.min.js}"></script>
+    <script th:src="@{/admin-assets/admin-lte/plugins/select2/js/select2.full.min.js}"></script>
     <script th:src="@{/admin/plugins/select2/js/select2.full.min.js}"></script>
     <script th:inline="javascript">
         const blog = [[${blog}]];
 
+        $('#content').summernote({
+            height: 400,
+        })
+
+        $("#content").css({
+            "display": "block",
+            "height": "0",
+            "padding": "0",
+            "border": "none"
+        })
+
         //Initialize Select2 Elements
         $(".select2").select2();
-
-        // Initialize editor
-        const easyMDE = new EasyMDE({
-            element: document.getElementById("content"),
-            spellChecker: false,
-            maxHeight: "500px",
-            renderingConfig: {
-                codeSyntaxHighlighting: true,
-            },
-        });
 
         const imagePreview = document.getElementById('image-preview')
         const imageInput = document.getElementById('image')
@@ -140,41 +137,36 @@
         imageInput.addEventListener("change", (e) => {
             // Lấy ra file vừa được chọn
             const file = e.target.files[0]
-
             // Tạo đối tượng form data để đưa dữ liệu vào gửi đi
             const formData = new FormData()
             formData.append('file', file)
-
-            // Goọi api sử dung axios
+            // Gọi api sử dung axios
             axios.post(`/api/admin/blogs/${blog.id}/upload-thumbnail`, formData)
                 .then(res => {
                     // Hiển thị hình ảnh vừa được upload lên
-                    imagePreview.src = res.data
-
-                    alert('Upload hình ảnh thành công.')
+                    imagePreview.src = res.data;
+                    toastr.success('Upload hình ảnh thành công.');
                 })
                 .catch(err => {
                     console.log(err)
-                    alert(err.response.data.message)
                 })
         })
 
         function updateBlog() {
             const updateTitle = document.getElementById("title");
+            const updateContent = document.getElementById('content');
             const updateDescription = document.getElementById("description");
             const updateStatus = document.getElementById("status");
-            console.log(easyMDE.value());
             axios.put(`/api/admin/blogs/${blog.id}`, {
                 title: updateTitle.value,
-                content: easyMDE.value(),
+                content: updateContent.value,
                 description: updateDescription.value,
                 status: updateStatus.value
                 }
             ).then(res => {
-                alert('Cập nhật blog thành công.')
-                window.location.reload();
+                toastr.success('Cập nhật blog thành công.')
             }).catch(err => {
-                alert(err.response.data.message)
+                console.log(err);
             })
         }
         function deleteBlog(){
@@ -183,8 +175,10 @@
             const url = `/api/admin/blogs/${blog.id}`;
             axios.delete(url)
                 .then(function (response) {
-                    alert('Xóa blog thành công');
-                    window.location.href = "/admin/blogs";
+                    toastr.success('Xóa blog thành công');
+                    setTimeout(function () {
+                        window.location.href = '/admin/blogs/own-blogs'
+                    }, 1500)
                 })
                 .catch(function (error) {
                     console.log(error);

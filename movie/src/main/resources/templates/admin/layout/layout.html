@@ -4,17 +4,18 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:replace="${title}"></title>
-    <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
-    <!-- Font Awesome -->
-    <link rel="stylesheet" th:href="@{/admin/plugins/fontawesome-free/css/all.min.css}" />
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
-    <!-- Theme style -->
-    <link rel="stylesheet" th:href="@{/admin/dist/css/adminlte.min.css}" />
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" th:href="@{/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}" />
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"/>
+    <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/plugins/fontawesome-free/css/all.css}"/>
+    <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/dist/css/adminlte.min.css}"/>
+    <link rel="stylesheet"
+          th:href="@{/admin-assets/admin-lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}"/>
+    <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/plugins/toastr/toastr.min.css}"/>
+    <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/plugins/pagination/pagination.min.css}"/>
+
+    <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}"/>
+    <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}"/>
+    <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css}"/>
 
     <th:block th:replace="${css}"></th:block>
 </head>
@@ -29,16 +30,25 @@
         <th:block th:replace="${content}"></th:block>
     </div>
 </div>
-<!-- jQuery -->
-<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
-<!-- Bootstrap 4 -->
-<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<!-- overlayScrollbars -->
-<script th:src="@{/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js}"></script>
-<!-- AdminLTE App -->
-<script th:src="@{/admin/dist/js/adminlte.js}"></script>
-<!-- Link axios-->
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script th:src="@{/admin-assets/admin-lte/plugins/jquery/jquery.min.js}"></script>
+<script th:src="@{/admin-assets/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/admin-assets/admin-lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js}"></script>
+
+<script th:src="@{/admin-assets/admin-lte/plugins/jquery-validation/jquery.validate.min.js}"></script>
+<script th:src="@{/admin-assets/admin-lte/plugins/jquery-validation/additional-methods.min.js}"></script>
+
+<script th:src="@{/admin-assets/admin-lte/plugins/toastr/toastr.min.js}"></script>
+<script th:src="@{/admin-assets/admin-lte/plugins/axios/axios.min.js}"></script>
+<script th:src="@{/admin-assets/admin-lte/plugins/pagination/pagination.min.js}"></script>
+
+<script th:src="@{/admin-assets/admin-lte/plugins/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/admin-assets/admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/admin-assets/admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{/admin-assets/admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+<script th:src="@{/admin-assets/admin-lte/plugins/datatables-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{/admin-assets/admin-lte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js}"></script>
+
+<script th:src="@{/admin-assets/admin-lte/dist/js/adminlte.js}"></script>
 <th:block th:replace="${js}"></th:block>
 </body>
 </html>

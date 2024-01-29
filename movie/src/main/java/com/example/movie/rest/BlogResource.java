@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/admin/blogs")
-@RequiredArgsConstructor
 public class BlogResource {
     @Autowired
     private AdminBlogService adminBlogService;
