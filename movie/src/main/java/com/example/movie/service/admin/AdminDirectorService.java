@@ -61,7 +61,10 @@ public class AdminDirectorService {
         // Kỉem tra xem đạo diễn có tồn tại không
         Director director = directorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đạo diễn có id: " + id));
-        // Upload file vào trong thư mục trên server (image_uploads)
+        //Upload file vào trong thư mục trên server (image_uploads)
+        if (director.getAvatar() != null){
+            FileUtils.deleteFile(director.getAvatar());
+        }
         String filePath = fileService.uploadFile(file);
         // Cập nhật đường dẫn thumbnail cho đạo diễn
         director.setAvatar(filePath);
