@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: #main-content}, ~{:: #js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết phim</title>
+    <!--css-->
+    <th:block id="css">
+        <link rel="stylesheet" th:href="@{/admin-assets/admin-lte/plugins/select2/css/select2.min.css}"/>
+    </th:block>
+</head>
+<body>
+<th:block id="main-content">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a th:href="@{/admin/movies}">Danh sách phim</a>
+                        </li>
+                        <li class="breadcrumb-item active" th:text="${movie.getTitle()}"></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row py-2">
+                <div class="col-6">
+                    <button type="button" class="btn btn-default">
+                        <i class="fas fa-chevron-left"></i> Quay lại
+                    </button>
+                    <button th:onclick="|updateMovie(${movie.getId()})|" type="button" class="btn btn-info px-4">
+                        Lưu
+                    </button>
+                    <button type="button" class="btn btn-primary px-4">
+                        Preview
+                    </button>
+                </div>
+
+                <div class="col-6 d-flex justify-content-end">
+                    <button type="button" class="btn btn-danger px-4">
+                        Xóa
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Tiêu đề</label>
+                                        <input type="text" class="form-control" id="title"
+                                               th:value="${movie.getTitle()}"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Mô tả ngắn</label>
+                                        <textarea id="description" class="form-control" rows="4"
+                                                  name="description" th:text="${movie.getDescription()}"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Đạo diễn</label>
+                                        <div class="select2-purple">
+                                            <select class="form-control select2" multiple="multiple" id="directors">
+                                                <option th:each="director : ${directors}"
+                                                        th:text="${director.getName()}"
+                                                        th:value="${director.getId()}"
+                                                        th:selected="${movie.getDirectors().contains(director)}"
+                                                ></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Diễn viên</label>
+                                        <div class="select2-purple">
+                                            <select class="form-control select2" multiple="multiple" id="actors">
+                                                <option th:each="actor : ${actors}"
+                                                        th:text="${actor.getName()}"
+                                                        th:value="${actor.getId()}"
+                                                        th:selected="${movie.getActors().contains(actor)}"
+                                                ></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Thể loại</label>
+                                        <div class="select2-purple">
+                                            <select class="form-control select2" id="genres" multiple="multiple">
+                                                <option th:each="genre : ${genres}"
+                                                        th:text="${genre.getName()}"
+                                                        th:value="${genre.getId()}"
+                                                        th:selected="${movie.getGenres().contains(genre)}"
+                                                ></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Năm phát hành</label>
+                                        <input type="number" class="form-control" id="releaseYear" name="releaseYear"
+                                               th:value="${movie.getReleaseYear()}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Trạng thái</label>
+                                        <select id="status" class="form-control" name="status">
+                                            <option th:selected="${movie.getStatus() == false}" value="false">
+                                                Nháp
+                                            </option>
+                                            <option th:selected="${movie.getStatus() == true}" value="true">
+                                                Công khai
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Thể loại</label>
+                                        <select id="type" class="form-control" name="type">
+                                            <option th:selected="${movie.getType().toString() == 'PHIM_LE'}"
+                                                    value="PHIM_LE">Phim lẻ
+                                            </option>
+                                            <option th:selected="${movie.getType().toString() == 'PHIM_CHIEU_RAP'}"
+                                                    value="PHIM_CHIEU_RAP">Phim chiếu rạp
+                                            </option>
+                                            <option th:selected="${movie.getType().toString() == 'PHIM_BO'}"
+                                                    value="PHIM_BO">Phim bộ
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="image-preview-container mb-3">
+                                            <img th:src="${movie.getPoster()}" alt="" id="image-preview"/>
+                                        </div>
+                                        <label th:onclick="|uploadThumbnail(${movie.getId()})|" for="image" class="btn btn-info btn-flat rounded">
+                                            Chọn hình ảnh
+                                        </label>
+                                        <input type="file" id="image" class="d-none">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
+<!--js-->
+<th:block id="js">
+    <script th:src="@{/admin-assets/admin-lte/plugins/select2/js/select2.full.min.js}"></script>
+    <script th:inline="javascript">
+        $(".select2").select2();
+
+        function updateMovie(id) {
+            const upTitle = document.getElementById("title");
+            const upDescription = document.getElementById("description");
+
+            const upDirector = document.getElementById("directors");
+            const selectedDirectorOptions = Array.from(upDirector.selectedOptions);
+            const listDirectors = selectedDirectorOptions.map(option => option.value);
+
+            const upActor = document.getElementById("actors");
+            const selectedActorOptions = Array.from(upActor.selectedOptions);
+            const listActors = selectedActorOptions.map(option => option.value);
+
+            const upGenre = document.getElementById("genres");
+            const selectedGenreOptions = Array.from(upGenre.selectedOptions);
+            const listGenres = selectedGenreOptions.map(option => option.value);
+
+            const upReleaseYear = document.getElementById("releaseYear");
+            const upStatus = document.getElementById("status");
+            const upType = document.getElementById("type");
+
+            console.log(listGenres);
+
+            axios.put(`/api/admin/movies/${id}`, {
+                    title: upTitle.value,
+                    description: upDescription.value,
+                    status: upStatus.value,
+                    type: upType.value,
+                    releaseYear: upReleaseYear.value,
+                    directorIds: listDirectors,
+                    actorIds: listActors,
+                    genreIds: listGenres
+                }
+            ).then(res => {
+                toastr.success('Cập nhật thông tin phim thành công.')
+            }).catch(err => {
+                toastr.error(err.response.data.message)
+            })
+        }
+
+        const imagePreview = document.getElementById('image-preview')
+        const imageInput = document.getElementById('image')
+
+        function uploadThumbnail(id) {
+            imageInput.addEventListener("change", (e) => {
+                // Lấy ra file vừa được chọn
+                const file = e.target.files[0]
+                // Tạo đối tượng form data để đưa dữ liệu vào gửi đi
+                const formData = new FormData()
+                formData.append('file', file)
+                // Gọi api sử dung axios
+                axios.post(`/api/admin/movies/${id}/upload-thumbnail`, formData)
+                    .then(res => {
+                        // Hiển thị hình ảnh vừa được upload lên
+                        imagePreview.src = res.data;
+                        toastr.success('Upload hình ảnh thành công.');
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            })
+        }
+    </script>
+</th:block>
+</body>
+</html>

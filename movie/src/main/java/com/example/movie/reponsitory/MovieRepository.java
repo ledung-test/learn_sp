@@ -17,6 +17,7 @@ import java.util.List;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
+
     //Tìm kiếm phim theo status, theo type, publishAT
     List<Movie> findByStatusAndType(Boolean status, MovieType type, Sort sort);
 

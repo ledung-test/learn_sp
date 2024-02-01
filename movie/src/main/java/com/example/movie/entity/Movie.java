@@ -58,4 +58,22 @@ public class Movie {
     )
     private List<Genre> genres;
 
+    @PrePersist // Trước khi lưu dữ liệu vào database
+    public void prePersist() {
+        createdAt = new Date();
+        updatedAt = new Date();
+        if (status){
+            publishedAt = new Date();
+        }
+    }
+    @PreUpdate // Trước khi cập nhật dữ liệu vào database
+    public void preUpdate() {
+        updatedAt = new Date();
+        if (status){
+            publishedAt = new Date();
+        }else {
+            publishedAt = null;
+        }
+    }
+
 }

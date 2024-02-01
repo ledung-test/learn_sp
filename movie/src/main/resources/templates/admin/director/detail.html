@@ -3,14 +3,9 @@
       th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: #main-content}, ~{:: #js})}">
 <head>
     <meta charset="UTF-8">
-    <title>Chi tiết đạo diễn</title>
+    <title>Chi tiết phim</title>
     <!--css-->
     <th:block id="css">
-        <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css"/>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css"/>
-
-        <link rel="stylesheet" th:href="@{/admin/plugins/select2/css/select2.min.css}"/>
-        <link rel="stylesheet" th:href="@{/admin/dist/css/style.css}">
     </th:block>
 </head>
 <body>
@@ -103,16 +98,9 @@
 </th:block>
 <!--js-->
 <th:block id="js">
-    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
-
-    <script th:src="@{/admin/plugins/select2/js/select2.full.min.js}"></script>
     <script th:inline="javascript">
         const director = [[${director}]];
-
-        //Initialize Select2 Elements
-        $(".select2").select2();
+        console.log(director)
 
         const imagePreview = document.getElementById('image-preview')
         const imageInput = document.getElementById('image')

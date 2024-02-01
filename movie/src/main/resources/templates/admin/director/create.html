@@ -150,6 +150,7 @@
                 }
             ).then(res => {
                 toastr.success('Tạo mới blog thành công.')
+                console.log(res.data.id);
                 setTimeout(function () {
                     window.location.href = `/admin/directors/${res.data.id}/detail`;
                 }, 1500)

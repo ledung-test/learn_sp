@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: #main-content}, ~{:: #js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Tất cả bài viết</title>
+    <!--css-->
+    <th:block id="css"></th:block>
+</head>
+<body>
+<th:block id="main-content">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Danh sách bài viết
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row py-2">
+                <div class="col-12">
+                    <button th:onclick="createBlog()" type="button" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Viết bài
+                    </button>
+                    <button th:onclick="refresh()" type="button" class="btn btn-info">
+                        <i class="fas fa-redo"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table id="table-movies" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Tên phim</th>
+                                    <th>Poster</th>
+                                    <th>Ngày phát hành</th>
+                                    <th>Thể loại</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="movie : ${movies}">
+                                    <td>
+                                        <a th:href="@{/admin/movies/{id}/detail (id=${movie.id})}"
+                                           th:text="${movie.getTitle()}"></a>
+                                    </td>
+                                    <td><img th:src="${movie.getPoster()}" width="150px"></td>
+                                    <td th:text="${#dates.format(movie.getPublishedAt(), 'dd/MM/yyyy')}"></td>
+                                    <td th:text="${movie.getType().getValue()}"></td>
+                                    <td th:text="${movie.getStatus() ? 'Công chiếu' : 'Chưa phát hành'}">Công khai</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
+<!--js-->
+<th:block id="js">
+    <script th:inline="javascript">
+        $('#table-movies').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+        function createMovie(){
+            window.location.href = "/admin/movies/create";
+        }
+        function refresh(){
+            window.location.reload();
+        }
+    </script>
+</th:block>
+</body>
+</html>
