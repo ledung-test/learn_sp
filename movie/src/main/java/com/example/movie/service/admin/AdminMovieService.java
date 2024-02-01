@@ -35,14 +35,18 @@ public class AdminMovieService {
     private FileService fileService;
     @PersistenceContext
     private EntityManager entityManager;
+
+    //Lấy danh sách tất cả phim
     public List<Movie> getAllMovie() {
         return movieRepository.findAll();
     }
 
+    //Lấy chi tiết một bộ phim
     public Movie detailMovie(Integer id) {
         return movieRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phim có id: " + id));
     }
+    //Lấy danh sách đạo diễn từ request
     public List<Director> addDirector(UpsertMovieRequest request){
         List<Director> directorList = new ArrayList<>();
         for (int i = 0; i < request.getDirectorIds().size(); i++) {
@@ -53,6 +57,7 @@ public class AdminMovieService {
         }
         return directorList;
     }
+    //Lấy danh sách diễn viên từ request
     public List<Actor> addActor(UpsertMovieRequest request){
         List<Actor> actorList = new ArrayList<>();
         for (int i = 0; i < request.getActorIds().size(); i++) {
@@ -63,6 +68,7 @@ public class AdminMovieService {
         }
         return actorList;
     }
+    //Lấy danh sách thể loại từ request
     public List<Genre> addGenre(UpsertMovieRequest request){
         List<Genre> genreList = new ArrayList<>();
         for (int i = 0; i < request.getGenreIds().size(); i++) {
@@ -73,7 +79,7 @@ public class AdminMovieService {
         }
         return genreList;
     }
-
+    //Thêm mới một bộ phim mới
     public Movie createMovie(UpsertMovieRequest request) {
         Slugify slugify = Slugify.builder().build();
         Movie movie = Movie.builder()
@@ -89,7 +95,7 @@ public class AdminMovieService {
                 .build();
         return movieRepository.save(movie);
     }
-
+    //Cập nhật phim
     public Movie updateMovie(Integer id, UpsertMovieRequest request) {
         Slugify slugify = Slugify.builder().build();
         Movie movie = movieRepository.findById(id)
@@ -106,7 +112,7 @@ public class AdminMovieService {
 
         return movieRepository.save(movie);
     }
-
+    //Xóa phim
     @Transactional
     public void deleteMovie(Integer id) {
         Movie movie = entityManager.find(Movie.class, id);
@@ -123,6 +129,7 @@ public class AdminMovieService {
         // Xóa bộ phim
         entityManager.remove(movie);
     }
+    //Upload poster phim
     public String uploadThumbnail(Integer id, MultipartFile file) {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phim có id: " + id));
