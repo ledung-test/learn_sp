@@ -57,80 +57,83 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <label>Tiêu đề</label>
-                                        <input type="text" class="form-control" id="title"/>
-                                    </div>
+                            <form id="form-create-movie">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Tiêu đề</label>
+                                            <input type="text" class="form-control" id="title" name="title"/>
+                                        </div>
 
-                                    <div class="form-group">
-                                        <label>Mô tả ngắn</label>
-                                        <textarea id="description" class="form-control" rows="4"
-                                                  name="description"></textarea>
-                                    </div>
+                                        <div class="form-group">
+                                            <label>Mô tả ngắn</label>
+                                            <textarea id="description" class="form-control" rows="4"
+                                                      name="description"></textarea>
+                                        </div>
 
-                                    <div class="form-group">
-                                        <label>Đạo diễn</label>
-                                        <div class="select2-purple">
-                                            <select class="form-control select2" multiple="multiple" id="directors">
-                                                <option th:each="director : ${directors}"
-                                                        th:text="${director.getName()}"
-                                                        th:value="${director.getId()}"
-                                                ></option>
-                                            </select>
+                                        <div class="form-group">
+                                            <label>Đạo diễn</label>
+                                            <div class="select2-purple">
+                                                <select name="directors" class="form-control select2" multiple="multiple" id="directors">
+                                                    <option th:each="director : ${directors}"
+                                                            th:text="${director.getName()}"
+                                                            th:value="${director.getId()}"
+                                                    ></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Diễn viên</label>
+                                            <div class="select2-purple">
+                                                <select name="actors" class="form-control select2" multiple="multiple" id="actors">
+                                                    <option th:each="actor : ${actors}"
+                                                            th:text="${actor.getName()}"
+                                                            th:value="${actor.getId()}"
+                                                    ></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Thể loại</label>
+                                            <div class="select2-purple">
+                                                <select name="genres" class="form-control select2" id="genres" multiple="multiple">
+                                                    <option th:each="genre : ${genres}"
+                                                            th:text="${genre.getName()}"
+                                                            th:value="${genre.getId()}"
+                                                    ></option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Diễn viên</label>
-                                        <div class="select2-purple">
-                                            <select class="form-control select2" multiple="multiple" id="actors">
-                                                <option th:each="actor : ${actors}"
-                                                        th:text="${actor.getName()}"
-                                                        th:value="${actor.getId()}"
-                                                ></option>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Năm phát hành</label>
+                                            <input type="number" class="form-control" id="releaseYear"
+                                                   name="releaseYear"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Trạng thái</label>
+                                            <select id="status" class="form-control" name="status">
+                                                <option value="false">
+                                                    Nháp
+                                                </option>
+                                                <option value="true">
+                                                    Công khai
+                                                </option>
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Thể loại</label>
-                                        <div class="select2-purple">
-                                            <select class="form-control select2" id="genres" multiple="multiple">
-                                                <option th:each="genre : ${genres}"
-                                                        th:text="${genre.getName()}"
-                                                        th:value="${genre.getId()}"
-                                                ></option>
+                                        <div class="form-group">
+                                            <label>Thể loại</label>
+                                            <select id="type" class="form-control" name="type">
+                                                <option value="PHIM_LE">Phim lẻ</option>
+                                                <option value="PHIM_CHIEU_RAP">Phim chiếu rạp</option>
+                                                <option value="PHIM_BO">Phim bộ</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Năm phát hành</label>
-                                        <input type="number" class="form-control" id="releaseYear" name="releaseYear"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Trạng thái</label>
-                                        <select id="status" class="form-control" name="status">
-                                            <option value="false">
-                                                Nháp
-                                            </option>
-                                            <option value="true">
-                                                Công khai
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Thể loại</label>
-                                        <select id="type" class="form-control" name="type">
-                                            <option value="PHIM_LE">Phim lẻ</option>
-                                            <option value="PHIM_CHIEU_RAP">Phim chiếu rạp</option>
-                                            <option value="PHIM_BO">Phim bộ</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -143,8 +146,68 @@
     <script th:src="@{/admin-assets/admin-lte/plugins/select2/js/select2.full.min.js}"></script>
     <script th:inline="javascript">
         $(".select2").select2();
+        function validate(){
+            $('#form-create-movie').validate({
+                rules: {
+                    title: {
+                        required: true
+                    },
+                    description: {
+                        required: true
+                    },
+                    directors: {
+                        required: true
+                    },
+                    actors:{
+                        required: true
+                    },
+                    genres:{
+                        required: true
+                    },
+                    releaseYear:{
+                        required: true
+                    }
+
+                },
+                messages: {
+                    title: {
+                        required: "Tên phim không được để trống"
+                    },
+                    description: {
+                        required: "Mô tả ngắn phim không được để trống"
+                    },
+                    directors: {
+                        required: "Đạo diễn phim không được để trống"
+                    },
+                    actors:{
+                        required: "Diễn viên phim không được để trống"
+                    },
+                    genres:{
+                        required: "Thể loại phim không được để trống"
+                    },
+                    releaseYear:{
+                        required: "Năm phát hành phim không được để trống"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        }
 
         function createMovie(id) {
+            validate();
+            if (!$('#form-create-movie').valid()) {
+                return;
+            }
             const upTitle = document.getElementById("title");
             const upDescription = document.getElementById("description");
 

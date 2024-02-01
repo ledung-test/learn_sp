@@ -11,6 +11,9 @@ import com.example.movie.reponsitory.MovieRepository;
 import com.example.movie.service.FileService;
 import com.example.movie.utils.FileUtils;
 import com.github.slugify.Slugify;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +33,8 @@ public class AdminMovieService {
     private GenreRepository genreRepository;
     @Autowired
     private FileService fileService;
+    @PersistenceContext
+    private EntityManager entityManager;
     public List<Movie> getAllMovie() {
         return movieRepository.findAll();
     }
@@ -101,6 +106,23 @@ public class AdminMovieService {
 
         return movieRepository.save(movie);
     }
+
+    @Transactional
+    public void deleteMovie(Integer id) {
+        Movie movie = entityManager.find(Movie.class, id);
+        // Xóa tất cả các đánh giá liên quan đến bộ phim
+        for (Review review : movie.getReviews()) {
+            entityManager.remove(review);
+        }
+        // Xóa tất cả các liên kết với Directors
+        movie.getDirectors().clear();
+        // Xóa tất cả các liên kết với Actors
+        movie.getActors().clear();
+        // Xóa tất cả các liên kết với Genres
+        movie.getGenres().clear();
+        // Xóa bộ phim
+        entityManager.remove(movie);
+    }
     public String uploadThumbnail(Integer id, MultipartFile file) {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phim có id: " + id));
@@ -113,6 +135,5 @@ public class AdminMovieService {
         movieRepository.save(movie);
         return filePath;
     }
-
 
 }

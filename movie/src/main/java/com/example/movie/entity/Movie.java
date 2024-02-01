@@ -75,5 +75,7 @@ public class Movie {
             publishedAt = null;
         }
     }
+    @OneToMany(mappedBy = "movie")
+    private List<Review> reviews;
 
 }

@@ -27,9 +27,15 @@ public class MovieResource {
         Movie movie = adminMovieService.updateMovie(id, request);
         return ResponseEntity.ok(movie);
     }
+    @DeleteMapping ("/{id}")
+    public ResponseEntity<?> deleteMovie(@PathVariable Integer id){
+        adminMovieService.deleteMovie(id);
+        return ResponseEntity.noContent().build();
+    }
     @PostMapping("/{id}/upload-thumbnail")
     public ResponseEntity<?> uploadThumbnail(@RequestParam("file") MultipartFile file, @PathVariable Integer id) {
         String path = adminMovieService.uploadThumbnail(id, file);
         return ResponseEntity.ok(path);
     }
+
 }
