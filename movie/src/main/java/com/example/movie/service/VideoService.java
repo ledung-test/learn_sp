@@ -44,7 +44,7 @@ public class VideoService {
             Path path = Paths.get(UPLOAD_DIR + File.separator + fileName);
             // Lưu tệp
             Files.copy(video.getInputStream(), path);
-            return File.separator + "api" + UPLOAD_DIR + "videos" + File.separator + fileName;
+            return File.separator + "api" + File.separator + "videos" + File.separator + fileName;
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Không thể tải tệp lên");

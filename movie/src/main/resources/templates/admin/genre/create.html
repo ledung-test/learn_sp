@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: #main-content}, ~{:: #js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm mới thể loại</title>
+    <!--css-->
+    <th:block id="css">
+        <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css"/>
+
+        <link rel="stylesheet" th:href="@{/admin/plugins/select2/css/select2.min.css}"/>
+        <link rel="stylesheet" th:href="@{/admin/dist/css/style.css}">
+    </th:block>
+</head>
+<body>
+<th:block id="main-content">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a th:href="@{/admin/genres}">Thể loại</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Tạo mới thể loại
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row py-2">
+                <div class="col-6">
+                    <button type="button" class="btn btn-default">
+                        <i class="fas fa-chevron-left"></i> Quay lại
+                    </button>
+                    <button th:onclick="createGenre()" type="button" class="btn btn-info px-4">
+                        Tạo mới
+                    </button>
+                    <button type="button" class="btn btn-primary px-4">
+                        Preview
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="form-create-genre">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Tên thể loại</label>
+                                            <input type="text" class="form-control" id="nameGenre" name="nameGenre"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</th:block>
+<!--js-->
+<th:block id="js">
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+
+    <script th:src="@{/admin/plugins/select2/js/select2.full.min.js}"></script>
+    <script>
+        function validate(){
+            $('#form-create-genre').validate({
+                rules: {
+                    nameGenre: {
+                        required: true
+                    },
+                },
+                messages: {
+                    nameGenre: {
+                        required: "Tên không được để trống"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        }
+        function createGenre() {
+            const nameGenre = document.getElementById("nameGenre");
+            validate();
+            if (!$('#form-create-genre').valid()) {
+                return;
+            }
+            axios.post(`/api/admin/genres`, {
+                    nameGenre: nameGenre.value,
+                }
+            ).then(res => {
+                toastr.success('Tạo mới thể loại thành công.')
+                setTimeout(function () {
+                    window.location.href = `/admin/genres`;
+                }, 1500)
+            }).catch(err => {
+                alert(err.response.data.message)
+            })
+        }
+    </script>
+</th:block>
+</body>
+</html>

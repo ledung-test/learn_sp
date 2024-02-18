@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: #main-content}, ~{:: #js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách thể loại</title>
+    <!--css-->
+    <th:block id="css"></th:block>
+</head>
+<body>
+<th:block id="main-content">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Danh sách thể loại
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row py-2">
+                <div class="col-12">
+                    <button th:onclick="createGenre()" type="button" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Thêm thể loại
+                    </button>
+                    <button th:onclick="refresh()" type="button" class="btn btn-info">
+                        <i class="fas fa-redo"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table id="table-genres" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tên thể loại</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="genre, index : ${genres}">
+                                    <td th:text="${index.index + 1}"></td>
+                                    <td>
+                                        <a th:href="@{/admin/genres/{id}/detail (id=${genre.id})}" th:text="${genre.getName()}"></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
+<!--js-->
+<th:block id="js">
+    <script th:inline="javascript">
+        $('#table-genres').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+        function createGenre(){
+            window.location.href = "/admin/genres/create";
+        }
+        function refresh(){
+            window.location.reload();
+        }
+    </script>
+</th:block>
+</body>
+</html>

@@ -3,7 +3,7 @@
       th:replace="~{admin/layout/layout :: layout(~{:: title}, ~{:: #css}, ~{:: #main-content}, ~{:: #js})}">
 <head>
     <meta charset="UTF-8">
-    <title>Chi tiết đạo diễn</title>
+    <title>Chi tiết diễn viên</title>
     <!--css-->
     <th:block id="css">
     </th:block>
@@ -20,9 +20,9 @@
                             <a href="#">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a th:href="@{/admin/directors}">Đạo diễn</a>
+                            <a th:href="@{/admin/actors}">Diễn viên</a>
                         </li>
-                        <li class="breadcrumb-item active" th:text="${director.getName()}"></li>
+                        <li class="breadcrumb-item active" th:text="${actor.getName()}"></li>
                     </ol>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                     <button type="button" class="btn btn-default">
                         <i class="fas fa-chevron-left"></i> Quay lại
                     </button>
-                    <button th:onclick="updateDirector()" type="button" class="btn btn-info px-4">
+                    <button th:onclick="|updateActor(${actor.getId()})|" type="button" class="btn btn-info px-4">
                         Lưu
                     </button>
                     <button type="button" class="btn btn-primary px-4">
@@ -45,7 +45,7 @@
                     </button>
                 </div>
                 <div class="col-6 d-flex justify-content-end">
-                    <button th:onclick="deleteDirector()" type="button" class="btn btn-danger px-4">
+                    <button th:onclick="|deleteActor(${actor.getId()})|" type="button" class="btn btn-danger px-4">
                         Xóa
                     </button>
                 </div>
@@ -55,30 +55,30 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form id="form-create-director">
+                            <form id="form-create-actor">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label>Tên đạo diễn</label>
-                                            <input th:value="${director.getName()}" type="text" class="form-control"
-                                                   id="nameDr" name="nameDr"/>
+                                            <input th:value="${actor.getName()}" type="text" class="form-control"
+                                                   id="nameAt" name="nameAt"/>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Ngày sinh</label>
-                                            <input th:value="${#dates.format(director.getBirthday(), 'yyyy-MM-dd')}" type="date" class="form-control"
-                                                   id="birthdayDr" name="birthdayDr">
+                                            <input th:value="${#dates.format(actor.getBirthday(), 'yyyy-MM-dd')}" type="date" class="form-control"
+                                                   id="birthdayAt" name="birthdayAt">
                                         </div>
                                         <div class="form-group">
                                             <label>Mô tả ngắn</label>
-                                            <textarea th:text="${director.getDescription()}" id="descriptionDr"
-                                                      name="descriptionDr" class="form-control" rows="3"></textarea>
+                                            <textarea th:text="${actor.getDescription()}" id="descriptionAt"
+                                                      name="descriptionAt" class="form-control" rows="3"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <div class="thumbnail-preview-container mb-3 border border-1">
-                                                <img th:src="${director.avatar}" alt="" id="image-preview"/>
+                                                <img th:src="${actor.avatar}" alt="" id="image-preview"/>
                                             </div>
                                             <label for="image" class="btn btn-info btn-flat rounded">
                                                 Chọn hình ảnh
@@ -87,11 +87,11 @@
                                         </div>
                                     </div>
                                 </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </section>
 
@@ -99,9 +99,8 @@
 <!--js-->
 <th:block id="js">
     <script th:inline="javascript">
-        const director = [[${director}]];
-        console.log(director)
-
+        const actor = [[${actor}]];
+        console.log(actor)
         const imagePreview = document.getElementById('image-preview')
         const imageInput = document.getElementById('image')
 
@@ -112,7 +111,7 @@
             const formData = new FormData()
             formData.append('file', file)
             // Gọi api sử dung axios
-            axios.post(`/api/admin/directors/${director.id}/upload-thumbnail`, formData)
+            axios.post(`/api/admin/actors/${actor.id}/upload-thumbnail`, formData)
                 .then(res => {
                     // Hiển thị hình ảnh vừa được upload lên
                     imagePreview.src = res.data;
@@ -123,26 +122,26 @@
                 })
         })
         function validate() {
-            $('#form-create-director').validate({
+            $('#form-create-actor').validate({
                 rules: {
-                    nameDr: {
+                    nameAt: {
                         required: true
                     },
-                    birthdayDr: {
+                    birthdayAt: {
                         required: true,
                     },
-                    descriptionDr: {
+                    descriptionAt: {
                         required: true
                     }
                 },
                 messages: {
-                    nameDr: {
+                    nameAt: {
                         required: "Tên không được để trống"
                     },
-                    birthdayDr: {
+                    birthdayAt: {
                         required: "Ngày sinh không được để trống",
                     },
-                    descriptionDr: {
+                    descriptionAt: {
                         required: "Mô tả ngắn không được để trống"
                     },
                 },
@@ -160,34 +159,34 @@
             });
         }
 
-        function updateDirector() {
-            const nameDr = document.getElementById("nameDr");
-            const birthdayDr = document.getElementById('birthdayDr');
-            const descriptionDr = document.getElementById("descriptionDr");
+        function updateActor(actorId) {
+            const nameAt = document.getElementById("nameAt");
+            const birthdayAt = document.getElementById('birthdayAt');
+            const descriptionAt = document.getElementById("descriptionAt");
             validate();
-            if (!$('#form-create-director').valid()) {
+            if (!$('#form-create-actor').valid()) {
                 return;
             }
-            axios.put(`/api/admin/directors/${director.id}`, {
-                    nameDr: nameDr.value,
-                    birthdayDr: birthdayDr.value,
-                    descriptionDr: descriptionDr.value,
+            axios.put(`/api/admin/actors/${actorId}`, {
+                    nameAt: nameAt.value,
+                    birthdayAt: birthdayAt.value,
+                    descriptionAt: descriptionAt.value,
                 }
             ).then(res => {
-                toastr.success('Cập nhật thông tin đạo diễn thành công.')
+                toastr.success('Cập nhật thông tin diễn viên thành công.')
             }).catch(err => {
                 console.log(err.response.data.message)
             })
         }
-        function deleteDirector(){
-            const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa đạo diễn này này?');
+        function deleteActor(actorId){
+            const isConfirmed = window.confirm('Bạn có chắc chắn muốn xóa diễn viên này?');
             if (!isConfirmed) return;
-            const url = `/api/admin/directors/${director.id}`;
+            const url = `/api/admin/actors/${actorId}`;
             axios.delete(url)
                 .then(function (response) {
-                    toastr.success('Xóa đạo diễn thành công');
+                    toastr.success('Xóa diễn viên thành công');
                     setTimeout(function () {
-                        window.location.href = '/admin/directors'
+                        window.location.href = '/admin/actors'
                     }, 1500)
                 })
                 .catch(function (error) {

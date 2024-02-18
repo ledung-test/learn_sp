@@ -1,10 +1,7 @@
 package com.example.movie.controller.admin;
 
 import com.example.movie.entity.*;
-import com.example.movie.service.admin.AdminActorService;
-import com.example.movie.service.admin.AdminDirectorService;
-import com.example.movie.service.admin.AdminGenreService;
-import com.example.movie.service.admin.AdminMovieService;
+import com.example.movie.service.admin.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +22,8 @@ public class AdminMovieController {
     private AdminActorService adminActorService;
     @Autowired
     private AdminGenreService adminGenreService;
+    @Autowired
+    private AdminEpisodeService adminEpisodeService;
 
     @GetMapping
     public String getMovie(Model model) {
@@ -41,6 +40,8 @@ public class AdminMovieController {
     public String getDetailMovie(@PathVariable Integer id, Model model){
         Movie movie = adminMovieService.detailMovie(id);
         model.addAttribute("movie", movie);
+        List<Episode> episodes = adminEpisodeService.getEpisodeListOfMovie(id);
+        model.addAttribute("episodes", episodes);
         setCommonAttributes(model);
         return "admin/movie/detail";
     }

@@ -26,23 +26,27 @@ public class BlogController {
                                   @RequestParam(required = false, defaultValue = "1") Integer page,
                                   @RequestParam(required = false, defaultValue = "6") Integer size){
         Page<Blog> pageData = blogService.findByStatus(true, page, size);
-        model.addAttribute("pageData", pageData);
-        model.addAttribute("currentPage", page);
         User user = (User) session.getAttribute("currentUser");
+
         if (user != null){
             model.addAttribute("user", user);
         }
+        model.addAttribute("pageData", pageData);
+        model.addAttribute("currentPage", page);
+
         return "web/tin-tuc";
     }
 
     @GetMapping("/tin-tuc/{id}/{slug}")
     public String chiTietTinTuc(Model model, @PathVariable Integer id, @PathVariable String slug){
         Blog blog = blogService.findByStatusAndIdAndSlug(true, id, slug);
-        model.addAttribute("chiTietTinTuc", blog);
         User user = (User) session.getAttribute("currentUser");
+
         if (user != null){
             model.addAttribute("user", user);
         }
+        model.addAttribute("chiTietTinTuc", blog);
+
         return "web/chi-tiet-tin-tuc";
     }
 }

@@ -50,7 +50,7 @@
                         </li>
                         <li class="nav-item">
                             <a th:href="@{/admin/blogs/create}" class="nav-link pl-5">
-                                <p>Tạo bài viết</p>
+                                <p>Tạo mới bài viết</p>
                             </a>
                         </li>
                     </ul>
@@ -71,7 +71,7 @@
                         </li>
                         <li class="nav-item">
                             <a th:href="@{/admin/movies/create}" class="nav-link pl-5">
-                                <p>Tạo phim</p>
+                                <p>Tạo mới phim</p>
                             </a>
                         </li>
                     </ul>
@@ -92,7 +92,7 @@
                         </li>
                         <li class="nav-item">
                             <a th:href="@{/admin/directors/create}" class="nav-link pl-5">
-                                <p>Tạo đạo diễn</p>
+                                <p>Tạo mới đạo diễn</p>
                             </a>
                         </li>
                     </ul>
@@ -107,11 +107,11 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/admin/actors" class="nav-link pl-5">
+                            <a th:href="@{/admin/actors}" class="nav-link pl-5">
                                 <p>Danh sách diễn viên</p>
                             </a>
-                            <a href="/admin/actors/create" class="nav-link pl-5">
-                                <p>Tạo diễn viên</p>
+                            <a th:href="@{/admin/actors/create}" class="nav-link pl-5">
+                                <p>Tạo mới diễn viên</p>
                             </a>
                         </li>
                     </ul>
@@ -126,11 +126,11 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/admin/users" class="nav-link pl-5">
+                            <a th:href="@{/admin/users}" class="nav-link pl-5">
                                 <p>Danh sách user</p>
                             </a>
-                            <a href="/admin/users/create" class="nav-link pl-5">
-                                <p>Tạo nhà user</p>
+                            <a th:href="@{/admin/users/create}" class="nav-link pl-5">
+                                <p>Tạo mới user</p>
                             </a>
                         </li>
                     </ul>
@@ -145,8 +145,11 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/admin/genres" class="nav-link pl-5">
+                            <a th:href="@{/admin/genres}" class="nav-link pl-5">
                                 <p>Danh sách thể loại</p>
+                            </a>
+                            <a th:href="@{/admin/genres/create}" class="nav-link pl-5">
+                                <p>Tạo mới thể loại</p>
                             </a>
                         </li>
                     </ul>

@@ -1,8 +1,11 @@
 package com.example.movie.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.Date;
 import java.util.List;
@@ -26,6 +29,7 @@ public class Actor {
     String description;
     String avatar;
     @ManyToMany(mappedBy = "actors")
+    //@Fetch(value = FetchMode.SUBSELECT)
+    @JsonIgnore
     private List<Movie> movies;
-
 }

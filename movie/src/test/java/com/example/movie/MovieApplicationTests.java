@@ -35,6 +35,8 @@ class MovieApplicationTests {
     private ReviewRepository reviewRepository;
     @Autowired
     private BlogRepository blogRepository;
+    @Autowired
+    private EpisodeRepository episodeRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -205,6 +207,38 @@ class MovieApplicationTests {
                         .movie(movie)
                         .build();
                 reviewRepository.save(review);
+            }
+        }
+    }
+    @Test
+    void test_episode(){
+        List<Movie> movieList = movieRepository.findAll();
+        Random random = new Random();
+        for (Movie movie: movieList) {
+            if (movie.getType() == MovieType.PHIM_BO){
+                for (int i = 0; i < random.nextInt(5) + 5; i++) {
+                    Episode episode = Episode.builder()
+                            .name("Tập " + (i+ 1))
+                            .displayOrder(i + 1)
+                            .status(true)
+                            .createdAt(new Date())
+                            .updatedAt(new Date())
+                            .publishedAt(new Date())
+                            .movie(movie)
+                            .build();
+                    episodeRepository.save(episode);
+                }
+            }else {
+                Episode episode = Episode.builder()
+                        .name("Tập full")
+                        .displayOrder(1)
+                        .status(true)
+                        .createdAt(new Date())
+                        .updatedAt(new Date())
+                        .publishedAt(new Date())
+                        .movie(movie)
+                        .build();
+                episodeRepository.save(episode);
             }
         }
     }
